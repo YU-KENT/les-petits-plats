@@ -17,8 +17,6 @@ class filter{
 }
 
 function displayRecipes(Recipes){
-     
-    
      Recipes.forEach(recipe => {
         const ingredients = recipe.ingredients
         const Template = new recipesFactory(recipe,ingredients);
@@ -30,13 +28,6 @@ function displayRecipes(Recipes){
 
   
     
-
-
-
-
-
-
-
 
 
 

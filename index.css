@@ -30,4 +30,11 @@ button{
 .card-content{
     font-size: 12px;
     font-weight: 400;
+    height: 110px;
+}
+.ingredients_nom{
+    font-weight: 700;
+}
+.time{
+    font-size: 18px;
 }

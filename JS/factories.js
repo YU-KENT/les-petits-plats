@@ -12,7 +12,7 @@ function recipesFactory(recipes,ingredients) {
     const recipesCard = `
     <div class="card rounded" style="width: 24rem; height: 23rem">
       <img src="icons/c7bebe.png" class="card-img-top h-50" alt="photo de plat">
-       <div class="card-body h-50 bg_grey">
+       <div class="card-body h-50 bg_grey container-fluid">
          <div class="row card-title">
             <h5 class="col-9 text-wrap ">${name}</h5>
             <div class ="d-flex col-3 align-items-center p-0">
@@ -23,7 +23,7 @@ function recipesFactory(recipes,ingredients) {
          <div class="card-content row d-flex">
             <div class="col-6 d-flex flex-column rec_ingredients">
             </div>
-            <p class="col-6 description">${description}</p>
+            <p class="col-6 description text-break">${description}</p>
          </div>
       </div>
    </div>
@@ -38,9 +38,14 @@ function recipesFactory(recipes,ingredients) {
     ingredients.forEach(ele =>{
     
       const newP = document.createElement("p")
+      newP.classList.add("m-0")
       const ingredientsCardB = `<span class="ingredients_nom">${ele.ingredient}: </span> ${ele.quantity}`
-      const ingredientsCardA = `<span class="ingredients_nom">${ele.ingredient}: </span> ${ele.quantity}${ele.unit}`
+      const ingredientsCardA = `<span class="ingredients_nom">${ele.ingredient}: </span> ${ele.quantity} ${ele.unit}`
+      const ingredientsCardC = `<span class="ingredients_nom">${ele.ingredient}</span>`
       if(!ele.unit){
+         if(!ele.quantity){
+          newP.innerHTML = ingredientsCardC
+         }else
         newP.innerHTML = ingredientsCardB
       }else {
         newP.innerHTML = ingredientsCardA}

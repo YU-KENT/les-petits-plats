@@ -50,13 +50,13 @@ class recipesApi extends api{
  }
  async getDataUstensils(){
     const recipes = await this.getData()
-    const austensils = recipes.map(rec => {return rec.austensils})
-    return austensils;
+    const ustensils = recipes.map(rec => {return rec.ustensils})
+    return ustensils;
  }
- async getDataAppliance(){
+ async getDataAppareils(){
     const recipes = await this.getData()
-    const appliance = recipes.map(rec => {return rec.appliance})
-    return appliance;
+    const appareils = recipes.map(rec => {return rec.appliance})
+    return appareils;
   
  }
  async getDataDescription(){

@@ -11,12 +11,19 @@ header img{
 input{
     background-color:#E7E7E7;
     font-size: 18px;
+    outline: none;
     
 }
 
 .description{
 
 font-family: 'Roboto', sans-serif;
+max-height: 90px;
+overflow: hidden;
+text-overflow:ellipsis;
+display:-webkit-box;
+-webkit-line-clamp: 5;
+-webkit-box-orient: vertical;
 }
 
 button{
@@ -30,11 +37,125 @@ button{
 .card-content{
     font-size: 12px;
     font-weight: 400;
-    height: 110px;
+    max-height:90px;
+    overflow: hidden;
+   
 }
 .ingredients_nom{
     font-weight: 700;
 }
 .time{
     font-size: 18px;
+}
+.recipes_card{
+    display:flex;
+    justify-content: center;
+}
+#search-champs_ingredients{
+    background-color:#3282F7 ;
+    color:#FFFFFF;
+    width:170px;
+    height:69px;
+    padding-left: 22px;
+    outline: none;
+    font-weight: 700;
+}
+#search-champs_appareils{
+    background-color:#68D9A4 ;
+    color:#FFFFFF;
+    width:170px;
+    height:69px;
+    padding-left: 22px;
+    outline: none;
+    font-weight: 700;
+}
+#search-champs_ustensiles{
+    background-color:#ED6454 ;
+    color:#FFFFFF;
+    width:170px;
+    height:69px;
+    padding-left: 22px;
+    outline: none;
+    font-weight: 700;
+}
+.arrowdown{
+    position: absolute;
+    top: 22px;
+    right: 14px;
+    visibility: visible;
+}
+
+.arrowup{
+    position: absolute;
+    top: 27px;
+    right: 14px;
+    visibility: hidden;
+}
+.search-ingredients,.search-appareils,.search-ustensiles{
+    position: relative;
+}
+
+.ingredients-list.active,.appareils-list.active,.ustensiles-list.active{
+  display:flex;
+}
+.ingredients-list{
+    background-color: #3282F7;
+    margin-left: 0px;
+    margin-right: 0px;
+    overflow: hidden;
+    display: none;
+}
+.appareils-list{
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: #68D9A4;
+    display: none;
+}
+
+.ustensiles-list{
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color:#ED6454;
+    display: none;
+}
+.search-champs input::placeholder{
+    color:#FFFFFF;
+    
+    font-weight: 700;
+}
+.list{
+    color:#FFFFFF;
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 20px;
+    margin-bottom: 0;
+    height:38px;
+    width:220px;
+    display: flex;
+    align-items: center;
+}
+.list.nonvisible{
+    display:none
+
+}
+.div-tag{
+    height:37px;
+    display: none;
+}
+.tag{
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 3px;
+    height:37px;
+    color:#FFFFFF;
+    display: flex;
+    padding-left:1rem;
+    background-color: #3282F7;
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+
+}
+.button-close{
+    margin: 0 8px;
 }

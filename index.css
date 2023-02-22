@@ -41,6 +41,24 @@ button{
     overflow: hidden;
    
 }
+.search-bar[data-error]::after {
+    content: attr(data-error);
+    font-size: 23px;
+    color: #e54858;
+    display: block;
+    margin-top: 7px;
+    text-align: left;
+    line-height: 0.8;
+    opacity: 0;
+    transition: 0.3s;
+    font-weight: 700;
+  }
+  .search-bar[data-error-visible="true"]::after {
+    opacity: 1;
+  }
+/*   .search-bar[data-error-visible="true"] .text-control {
+    border: 2px solid #e54858;
+  } */
 .ingredients_nom{
     font-weight: 700;
 }
@@ -50,6 +68,12 @@ button{
 .recipes_card{
     display:flex;
     justify-content: center;
+}
+.recipes_card.nonvisible{
+    display:none;
+}
+.rec_ingredients{
+    padding-right: 0;
 }
 #search-champs_ingredients{
     background-color:#3282F7 ;
@@ -99,6 +123,7 @@ button{
   display:flex;
 }
 .ingredients-list{
+    cursor: pointer;
     background-color: #3282F7;
     margin-left: 0px;
     margin-right: 0px;
@@ -106,6 +131,7 @@ button{
     display: none;
 }
 .appareils-list{
+    cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color: #68D9A4;
@@ -113,6 +139,7 @@ button{
 }
 
 .ustensiles-list{
+    cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color:#ED6454;
@@ -130,7 +157,7 @@ button{
     padding-left: 20px;
     margin-bottom: 0;
     height:38px;
-    width:220px;
+    width:170px;
     display: flex;
     align-items: center;
 }
@@ -150,7 +177,6 @@ button{
     color:#FFFFFF;
     display: flex;
     padding-left:1rem;
-    background-color: #3282F7;
     display: flex;
     align-items: center;
     margin-left: 1rem;
@@ -158,4 +184,16 @@ button{
 }
 .button-close{
     margin: 0 8px;
+}
+.tag.ustensiles{
+    background-color: #ED6454;
+}
+.tag.appareils{
+    background-color: #68D9A4;
+}
+.tag.ingredients{
+    background-color: #3282F7;
+}
+.button-close{
+    cursor: pointer;
 }

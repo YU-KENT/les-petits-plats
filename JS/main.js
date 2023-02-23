@@ -90,18 +90,16 @@ init();
 
 ///////////// test
 function displayTestRecipes(allRecipes){
-    const header = document.querySelector("header")
+    const header = document.querySelector("header");
 allRecipes.forEach((recipe)=>{
   
-    const arryIngredients = recipe.ingredients.map(obj => { return cleanUpSpecialChars(obj.ingredient + obj.quantity)});
-    const newP  = document.createElement("P")
+    const arryIngredients = recipe.ingredients.map((obj) => { return cleanUpSpecialChars(obj.ingredient + obj.quantity);});
+    const newP  = document.createElement("P");
     const recConetent = recipe.name + recipe.description + 
     recipe.appliance + recipe.ustensils + arryIngredients;
-    newP.innerHTML = cleanUpSpecialChars(recConetent)
-    header.appendChild(newP)
-})
-
-
+    newP.innerHTML = cleanUpSpecialChars(recConetent);
+    header.appendChild(newP);
+});
 }
 ////////////
 function displayRecipes(Recipes) {

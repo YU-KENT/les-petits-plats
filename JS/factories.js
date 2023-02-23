@@ -32,9 +32,10 @@ function recipesFactory(recipes,ingredients) {
   return(newDiv)
 }
 
-function getIngredientCard(){
+function getIngredientCard(recipe,ingredients){
     const divIngredients = document.querySelectorAll(".rec_ingredients")
-    const recId = recipes.id
+    console.log("divIngredients",divIngredients)
+    const recId = recipe.id
     ingredients.forEach(ele =>{
     
       const newP = document.createElement("p")

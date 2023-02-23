@@ -8,7 +8,7 @@ async function init(){
     const ingredientsData = await dataApi.getDataIngredients();
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
-    console.log("all",allRecipes)
+    /* console.log("all",allRecipes) */
 
     displayRecipes(allRecipes);
     //get all list ingredients/appreils/ustensils
@@ -21,11 +21,21 @@ async function init(){
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
 
-    /////////////////////////
-    /* filterSearchBar1(allRecipes) */ 
+    //search bar
+    searchBar.addEventListener('keyup', e =>{
+    
+        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+        if(searchedLetters.length > 2){
+        filterSearchBar(searchedLetters,allRecipes)
+       }else if(e.target.value == ""){
+        cleanCardNonvisible();
+        }
+    })
+   
     
 }
 init();
+
 function displayRecipes(Recipes){
     Recipes.forEach(recipe => {
        const ingredients = recipe.ingredients
@@ -34,6 +44,8 @@ function displayRecipes(Recipes){
        Template.getIngredientCard(recipe,ingredients);
        })
    }
+
+
     
 function noRepeatArray(arrData){
        var arr = arrData.flat();
@@ -52,19 +64,25 @@ function getIngredientsList(ingredientsData){
    return newList;
 
 }
-//search bar
-const searchBar = document.getElementById("search-bar")
-searchBar.addEventListener('keyup', e =>{
-    
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
-    if(searchedLetters.length > 2){
-    filterSearchBar(searchedLetters)
-   }else if(e.target.value == ""){
-    cleanCardNonvisible();
-    }
-})
 
-function filterSearchBar(letters){
+//function search bar
+const searchBar = document.getElementById("search-bar")
+
+function filterSearchBar(Letters,allRecipes){
+    console.log("filterSearchBar",allRecipes[1].ingredients.toString())
+    sectionRecipes.innerHTML= ""
+    
+    const filteredArray = allRecipes.filter(rec =>
+        rec.name.includes(Letters) ||
+        /* rec.ingredients.toString().includes(Letters) || */
+        rec.description.includes(Letters)
+        )
+        console.log("filteredArray",filteredArray)
+        displayRecipes(filteredArray)
+}
+
+
+/* function filterSearchBar(letters){
     const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
     
         for( let i = 0; i < recipesCard.length; i ++){
@@ -78,7 +96,7 @@ function filterSearchBar(letters){
     checkResult();
     
 }
-
+ */
 
 
 function checkResult(){ //Aucune recette correspondante à la recherche,message error
@@ -241,15 +259,4 @@ function changeArrow(_this){
  
 
 /////////////////////
-/*  function filterSearchBar1(allRecipes){
-    console.log("11",allRecipes)
-    sectionRecipes.innerHTML= ""
-    if(searchedLetters.length > 2){
-    const filteredArray = allRecipes.filter(el =>
-        el.name.includes(searchedLetters) ||
-        el.ingredients.tostring().includes(searchedLetters) ||
-        el.description.includes(searchedLetters)
-        )
-        displayRecipes(filteredArray)
-    }
-}*/
+

@@ -59,13 +59,5 @@ class recipesApi extends api{
     return appareils;
   
  }
- async getDataDescription(){
-    const recipes = await this.getData()
-    const description = recipes.map(rec => {return rec.description})
-    return description;
-
- }
 
 }
-/* const data = new api.getDataAppliance()
-console.log(data) */

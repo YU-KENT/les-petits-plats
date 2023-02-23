@@ -1,33 +1,8 @@
 
 const sectionRecipes = document.querySelector(".recipes")
 
-function displayRecipes(Recipes){
-     Recipes.forEach(recipe => {
-        const ingredients = recipe.ingredients
-        const Template = new recipesFactory(recipe,ingredients);
-        sectionRecipes.appendChild(Template.getRecipesCard());
-        Template.getIngredientCard(recipe,ingredients);
-        })
-    }
-     
-function noRepeatArray(arrData){
-        var arr = arrData.flat();
-        var newArr = [...new Set(arr)];
-        return newArr
-    
-    }
-
-function getIngredientsList(ingredientsData){
-    var newList = [];
-    ingredientsData.forEach((obj)=>{
-        for(let i = 0; i < obj.length; i ++){
-        const newArry = obj[i].ingredient
-        newList.push(newArry)}
-    })
-    return newList;
-
-}
 async function init(){
+    //get data
     const dataApi =  new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData(); 
     const ingredientsData = await dataApi.getDataIngredients();
@@ -36,14 +11,12 @@ async function init(){
     console.log("all",allRecipes)
 
     displayRecipes(allRecipes);
-    
+    //get all list ingredients/appreils/ustensils
     const ustensilsList = noRepeatArray(ustensilsData) 
-  
     const appareilsList = noRepeatArray(appareilsData)
-
     const ingreArry = getIngredientsList(ingredientsData)
     const ingredientsList = noRepeatArray(ingreArry)
-    
+    // display list 
     displayingredientList(ingredientsList);
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
@@ -53,21 +26,47 @@ async function init(){
     
 }
 init();
+function displayRecipes(Recipes){
+    Recipes.forEach(recipe => {
+       const ingredients = recipe.ingredients
+       const Template = new recipesFactory(recipe,ingredients);
+       sectionRecipes.appendChild(Template.getRecipesCard());
+       Template.getIngredientCard(recipe,ingredients);
+       })
+   }
+    
+function noRepeatArray(arrData){
+       var arr = arrData.flat();
+       var newArr = [...new Set(arr)];
+       return newArr
+   
+   }
 
+function getIngredientsList(ingredientsData){
+   var newList = [];
+   ingredientsData.forEach((obj)=>{
+       for(let i = 0; i < obj.length; i ++){
+       const newArry = obj[i].ingredient
+       newList.push(newArry)}
+   })
+   return newList;
+
+}
 //search bar
 const searchBar = document.getElementById("search-bar")
 searchBar.addEventListener('keyup', e =>{
     
     const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
-    console.log(searchedLetters);
-    filterSearchBar(searchedLetters);
+    if(searchedLetters.length > 2){
+    filterSearchBar(searchedLetters)
+   }else if(e.target.value == ""){
+    cleanCardNonvisible();
+    }
 })
 
 function filterSearchBar(letters){
     const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-    console.log("recipesCard",recipesCard,letters)
     
-    if (letters.length > 2){
         for( let i = 0; i < recipesCard.length; i ++){
             if(recipesCard[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)){
                 recipesCard[i].classList.remove("nonvisible")
@@ -76,14 +75,16 @@ function filterSearchBar(letters){
                 recipesCard[i].classList.add("nonvisible")
          }
         }
-        }
     checkResult();
     
 }
-function checkResult(){
-    
+
+
+
+function checkResult(){ //Aucune recette correspondante à la recherche,message error
+    const divSearchbar = document.querySelector(".search")
     const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-    const divSearchbar = document.querySelector(".search-bar")
+    
   /*   console.log("checkResult",restCard,divSearchbar) */
     if(restCard.length == 0){
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
@@ -109,7 +110,6 @@ const ustenListLength = divUstenList.length
 // function filtre par mot
 function filterChamps(letters,list){
     console.log("filterChamps")
-    
         for( let i = 0; i < list.length; i ++){
             if(list[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)){
                 list[i].classList.remove("nonvisible")
@@ -122,9 +122,9 @@ function filterChamps(letters,list){
 // search ingredients
 
 champIngredients.addEventListener('keyup', (e) =>{
-    
     const IngredientsList = document.querySelectorAll(".ingredients-list p")
     const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
     if(e.target.value.length > 2){
     filterChamps(searchedLetters,IngredientsList)
     divIngreList.style.display = "flex"; // montrer le resultat de recherche
@@ -137,9 +137,9 @@ champIngredients.addEventListener('keyup', (e) =>{
 
 //seaarch Appareils
 champAppareils.addEventListener('keyup', (e) =>{
-    
     const AppareilsList = document.querySelectorAll(".appareils-list p")
     const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
     if(e.target.value.length > 2){
     filterChamps(searchedLetters,AppareilsList)
     divApparList.style.display = "flex"; // montrer le resultat de recherche
@@ -149,9 +149,9 @@ champAppareils.addEventListener('keyup', (e) =>{
 })
 //search ustensiles
 champUstensiles.addEventListener('keyup', (e) =>{
-    
     const ustensilesList = document.querySelectorAll(".ustensiles-list p")
     const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
     if(e.target.value.length > 2){
     filterChamps(searchedLetters,ustensilesList)
     divUstenList.style.display = "flex"; // montrer le resultat de recherche
@@ -172,9 +172,8 @@ function cleanCardNonvisible(){
 }
 
 //creat Tag
-var tagList = [];
+var tagList = []; // un tag list
 function creatTag(lists){
-   
     console.log("creatTag")
     const parentList = lists[0].parentNode
 
@@ -198,7 +197,6 @@ function creatTag(lists){
 }
 // close tag
 function closeTag(_this){
-   console.log(tagList[0])
    const btnsClose = document.querySelectorAll(".div-tag .button-close")
    const tagLetters = _this.previousElementSibling.textContent
    console.log("KKK",btnsClose,tagLetters)

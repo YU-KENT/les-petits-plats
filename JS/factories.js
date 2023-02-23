@@ -93,7 +93,6 @@ function displayUstensilesList(arry){
 
 }
 
-
 function tagFactory(list,e){
 const divTag = document.querySelector(".div-tag")
 const newDiv = document.createElement("div")

@@ -41,7 +41,7 @@ button{
     overflow: hidden;
    
 }
-.search-bar[data-error]::after {
+.search[data-error]::after {
     content: attr(data-error);
     font-size: 23px;
     color: #e54858;
@@ -53,10 +53,10 @@ button{
     transition: 0.3s;
     font-weight: 700;
   }
-  .search-bar[data-error-visible="true"]::after {
+  .search[data-error-visible="true"]::after {
     opacity: 1;
   }
-/*   .search-bar[data-error-visible="true"] .text-control {
+/*   .search[data-error-visible="true"] .text-control {
     border: 2px solid #e54858;
   } */
 .ingredients_nom{

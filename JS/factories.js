@@ -36,7 +36,7 @@ function getIngredientCard(){
     const divIngredients = document.querySelectorAll(".rec_ingredients")
     
     const numRecipes = divIngredients.length
-    console.log("rec_ingredients",numRecipes)
+    
     ingredients.forEach(ele =>{
     
       const newP = document.createElement("p")

@@ -16,6 +16,7 @@ async function init(){
     const appareilsList = noRepeatArray(appareilsData)
     const ingreArry = getIngredientsList(ingredientsData)
     const ingredientsList = noRepeatArray(ingreArry)
+    /* console.log(appareilsList) */
     // display list 
     displayingredientList(ingredientsList);
     displayAppareilsList(appareilsList);
@@ -24,7 +25,7 @@ async function init(){
     //search bar
     searchBar.addEventListener('keyup', e =>{
     
-        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "").toString()
         if(searchedLetters.length > 2){
         filterSearchBar(searchedLetters,allRecipes)
        }/* else if(e.target.value == ""){
@@ -69,19 +70,24 @@ function getIngredientsList(ingredientsData){
 const searchBar = document.getElementById("search-bar")
 
 function filterSearchBar(Letters,allRecipes){
-    const TEST = allRecipes[1].ingredients
-    console.log("filterSearchBar",TEST.map(obj => {return obj.ingredient}))
+    console.log("Letters",Letters )
+
     sectionRecipes.innerHTML= "";
     
     const filteredArray = allRecipes.filter(filterRec)
         function filterRec(recipe){
             
-        const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient})
-        if(arryIngredients.includes(Letters)){
-            
+        const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient.toLowerCase()})
+        if(arryIngredients.join().includes(Letters)){
             return true
         }
-        else console.log("arryIngredients",arryIngredients)    
+        else if (recipe.name.toLowerCase().includes(Letters)){
+            return true
+        }else if (recipe.description.toLowerCase().includes(Letters)){
+            return true
+        }
+        
+        console.log("arryIngredients",arryIngredients.join(),recipe.name)    
         
     }
         /* rec.name.includes(Letters) || */

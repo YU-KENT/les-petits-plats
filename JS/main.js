@@ -8,7 +8,6 @@ async function init(){
     const ingredientsData = await dataApi.getDataIngredients();
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
-    console.log("all",allRecipes)
 
     displayRecipes(allRecipes);
     //get all list ingredients/appreils/ustensils
@@ -20,13 +19,11 @@ async function init(){
     displayingredientList(ingredientsList);
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
-
-    /////////////////////////
-    /* filterSearchBar1(allRecipes) */ 
     
 }
 init();
 function displayRecipes(Recipes){
+    console.log("Recipes",Recipes)
     Recipes.forEach(recipe => {
        const ingredients = recipe.ingredients
        const Template = new recipesFactory(recipe,ingredients);

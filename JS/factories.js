@@ -1,6 +1,6 @@
-function recipesFactory(recipes,ingredients) {
+function recipesFactory(recipe,ingredients) {
 
- const{ name, time, description,id,appliance, ustensils} = recipes
+ const{ name, time, description,id,appliance, ustensils} = recipe
  const{ingredient, quantity, unit} = ingredients
 
  function getRecipesCard(){
@@ -32,10 +32,11 @@ function recipesFactory(recipes,ingredients) {
   return(newDiv)
 }
 
-function getIngredientCard(recipe,ingredients){
+function getIngredientCard(){
     const divIngredients = document.querySelectorAll(".rec_ingredients")
-    console.log("divIngredients",divIngredients)
-    const recId = recipe.id
+    
+    const numRecipes = divIngredients.length
+    console.log("rec_ingredients",numRecipes)
     ingredients.forEach(ele =>{
     
       const newP = document.createElement("p")
@@ -50,7 +51,7 @@ function getIngredientCard(recipe,ingredients){
         newP.innerHTML = ingredientsCardB
       }else {
         newP.innerHTML = ingredientsCardA}
-      divIngredients[recId-1].appendChild(newP)
+      divIngredients[numRecipes-1].appendChild(newP)
   })
   }
 

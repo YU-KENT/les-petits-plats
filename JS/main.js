@@ -27,9 +27,9 @@ async function init(){
         const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
         if(searchedLetters.length > 2){
         filterSearchBar(searchedLetters,allRecipes)
-       }else if(e.target.value == ""){
+       }/* else if(e.target.value == ""){
         cleanCardNonvisible();
-        }
+        } */
     })
    
     
@@ -41,7 +41,7 @@ function displayRecipes(Recipes){
        const ingredients = recipe.ingredients
        const Template = new recipesFactory(recipe,ingredients);
        sectionRecipes.appendChild(Template.getRecipesCard());
-       Template.getIngredientCard(recipe,ingredients);
+        Template.getIngredientCard(recipe,ingredients); 
        })
    }
 
@@ -69,34 +69,28 @@ function getIngredientsList(ingredientsData){
 const searchBar = document.getElementById("search-bar")
 
 function filterSearchBar(Letters,allRecipes){
-    console.log("filterSearchBar",allRecipes[1].ingredients.toString())
-    sectionRecipes.innerHTML= ""
+    const TEST = allRecipes[1].ingredients
+    console.log("filterSearchBar",TEST.map(obj => {return obj.ingredient}))
+    sectionRecipes.innerHTML= "";
     
-    const filteredArray = allRecipes.filter(rec =>
-        rec.name.includes(Letters) ||
-        /* rec.ingredients.toString().includes(Letters) || */
-        rec.description.includes(Letters)
-        )
+    const filteredArray = allRecipes.filter(filterRec)
+        function filterRec(recipe){
+            
+        const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient})
+        if(arryIngredients.includes(Letters)){
+            
+            return true
+        }
+        else console.log("arryIngredients",arryIngredients)    
+        
+    }
+        /* rec.name.includes(Letters) || */
+        /* ||  */
+        /* rec.description.includes(Letters) */
+        console.log("Letters",Letters)
         console.log("filteredArray",filteredArray)
         displayRecipes(filteredArray)
 }
-
-
-/* function filterSearchBar(letters){
-    const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-    
-        for( let i = 0; i < recipesCard.length; i ++){
-            if(recipesCard[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)){
-                recipesCard[i].classList.remove("nonvisible")
-                
-            }else{
-                recipesCard[i].classList.add("nonvisible")
-         }
-        }
-    checkResult();
-    
-}
- */
 
 
 function checkResult(){ //Aucune recette correspondante à la recherche,message error

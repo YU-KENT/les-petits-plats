@@ -86,6 +86,7 @@ function displayRecipes(Recipes){
        sectionRecipes.appendChild(Template.getRecipesCard());
         Template.getIngredientCard(recipe,ingredients); 
        })
+
    }
 
 
@@ -119,7 +120,6 @@ function filterSearchBar(Letters,allRecipes){
     
     const filteredArray = allRecipes.filter(filterRec)
         function filterRec(recipe){
-            
         const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient.toLowerCase().replace(/\s/g, "")})
         if(arryIngredients.join().includes(Letters)){
             return true
@@ -138,6 +138,7 @@ function filterSearchBar(Letters,allRecipes){
         const recipesVisible = document.querySelectorAll(".recipes_card")
         recipesVisible.forEach((recipe)=> recipe.classList.add("visible"))
         console.log("recipesVisible",recipesVisible)
+        checkResult();
 }
 
 
@@ -207,7 +208,7 @@ function creatTag(lists,allRecipes){
            tagList.push(listSelected);
            console.log('taglist',tagList,e.target.parentNode.classList)
            parentList.style.display = "none";
-           cleanListNonvisible();
+           /* cleanListNonvisible(); */
            filterSearchBar(motDeCle,allRecipes) 
         }
         else return
@@ -222,7 +223,7 @@ function closeTag(_this){
    console.log("KKK",btnsClose,tagLetters)
    _this.parentNode.remove();
    removeByValue(tagList, tagLetters)
-   cleanCardNonvisible();
+   /* cleanCardNonvisible(); */
    for(let i=0 ; i< tagList.length; i++){
     const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
     filterSearchBar(restTagLetters)
@@ -260,5 +261,4 @@ function changeArrow(_this){
  }
  
 
-/////////////////////
 

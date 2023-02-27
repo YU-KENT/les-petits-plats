@@ -155,7 +155,9 @@ function filterSearchBar(Letters,allRecipes){
         console.log("filteredArray",filteredArray)
         displayRecipes(filteredArray)
         cleanCardvisible()
-     
+        const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
+        for(let i = 0; i <recipeAfter1stFilter.length; i++){
+        recipeAfter1stFilter[i].classList.add("visible")
        
         checkResult();
    
@@ -180,7 +182,7 @@ function filterSearchBar(Letters,allRecipes){
 
 function checkResult(){ //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card")
+    const restCard = document.querySelectorAll(".recipes_card.visible")
     
   /*   console.log("checkResult",restCard,divSearchbar) */
     if(restCard.length == 0){

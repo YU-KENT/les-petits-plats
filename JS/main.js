@@ -32,10 +32,52 @@ async function init(){
         cleanCardNonvisible();
         } */
     })
+
+   // search ingredients
+
+    champIngredients.addEventListener('keyup', (e) =>{
+    const IngredientsList = document.querySelectorAll(".ingredients-list p")
+    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
+    if(e.target.value.length > 2){
+    filterChamps(searchedLetters,IngredientsList)
+    divIngreList.style.display = "flex"; // montrer le resultat de recherche
+    divIngreList.style.flexDirection = "column";
+    creatTag(IngredientsList,allRecipes)
    
+    }
+
+//seaarch Appareils
+    champAppareils.addEventListener('keyup', (e) =>{
+    const AppareilsList = document.querySelectorAll(".appareils-list p")
+    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
+    if(e.target.value.length > 2){
+    filterChamps(searchedLetters,AppareilsList)
+    divApparList.style.display = "flex"; // montrer le resultat de recherche
+    divApparList.style.flexDirection = "column";
+    creatTag(AppareilsList,allRecipes)}
+    
+})
+//search ustensiles
+    champUstensiles.addEventListener('keyup', (e) =>{
+    const ustensilesList = document.querySelectorAll(".ustensiles-list p")
+    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+
+    if(e.target.value.length > 2){
+    filterChamps(searchedLetters,ustensilesList)
+    divUstenList.style.display = "flex"; // montrer le resultat de recherche
+    divUstenList.style.flexDirection = "column";
+    
+    creatTag(ustensilesList,allRecipes)}
+    
+})
+
+})
     
 }
 init();
+
 
 function displayRecipes(Recipes){
     Recipes.forEach(recipe => {
@@ -70,6 +112,7 @@ function getIngredientsList(ingredientsData){
 const searchBar = document.getElementById("search-bar")
 
 function filterSearchBar(Letters,allRecipes){
+    
     console.log("Letters",Letters )
 
     sectionRecipes.innerHTML= "";
@@ -77,25 +120,24 @@ function filterSearchBar(Letters,allRecipes){
     const filteredArray = allRecipes.filter(filterRec)
         function filterRec(recipe){
             
-        const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient.toLowerCase()})
+        const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient.toLowerCase().replace(/\s/g, "")})
         if(arryIngredients.join().includes(Letters)){
             return true
         }
-        else if (recipe.name.toLowerCase().includes(Letters)){
+        else if (recipe.name.toLowerCase().replace(/\s/g, "").includes(Letters)){
             return true
-        }else if (recipe.description.toLowerCase().includes(Letters)){
+        }else if (recipe.description.toLowerCase().replace(/\s/g, "").includes(Letters)){
             return true
         }
-        
-        console.log("arryIngredients",arryIngredients.join(),recipe.name)    
-        
-    }
-        /* rec.name.includes(Letters) || */
-        /* ||  */
-        /* rec.description.includes(Letters) */
+            return false
+        }
+
         console.log("Letters",Letters)
         console.log("filteredArray",filteredArray)
         displayRecipes(filteredArray)
+        const recipesVisible = document.querySelectorAll(".recipes_card")
+        recipesVisible.forEach((recipe)=> recipe.classList.add("visible"))
+        console.log("recipesVisible",recipesVisible)
 }
 
 
@@ -137,47 +179,6 @@ function filterChamps(letters,list){
                  }
         }
 }
-// search ingredients
-
-champIngredients.addEventListener('keyup', (e) =>{
-    const IngredientsList = document.querySelectorAll(".ingredients-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
-
-    if(e.target.value.length > 2){
-    filterChamps(searchedLetters,IngredientsList)
-    divIngreList.style.display = "flex"; // montrer le resultat de recherche
-    divIngreList.style.flexDirection = "column";
-
-    creatTag(IngredientsList)
-   
-    }
-})
-
-//seaarch Appareils
-champAppareils.addEventListener('keyup', (e) =>{
-    const AppareilsList = document.querySelectorAll(".appareils-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
-
-    if(e.target.value.length > 2){
-    filterChamps(searchedLetters,AppareilsList)
-    divApparList.style.display = "flex"; // montrer le resultat de recherche
-    divApparList.style.flexDirection = "column";
-    creatTag(AppareilsList)}
-    
-})
-//search ustensiles
-champUstensiles.addEventListener('keyup', (e) =>{
-    const ustensilesList = document.querySelectorAll(".ustensiles-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
-
-    if(e.target.value.length > 2){
-    filterChamps(searchedLetters,ustensilesList)
-    divUstenList.style.display = "flex"; // montrer le resultat de recherche
-    divUstenList.style.flexDirection = "column";
-    
-    creatTag(ustensilesList)}
-    
-})
 
 
 function cleanListNonvisible(){
@@ -191,8 +192,9 @@ function cleanCardNonvisible(){
 
 //creat Tag
 var tagList = []; // un tag list
-function creatTag(lists){
+function creatTag(lists,allRecipes){
     console.log("creatTag")
+    console.log("allRecipes",allRecipes)
     const parentList = lists[0].parentNode
 
     for(let i = 0; i < lists.length; i++){
@@ -206,7 +208,7 @@ function creatTag(lists){
            console.log('taglist',tagList,e.target.parentNode.classList)
            parentList.style.display = "none";
            cleanListNonvisible();
-           filterSearchBar(motDeCle) 
+           filterSearchBar(motDeCle,allRecipes) 
         }
         else return
             

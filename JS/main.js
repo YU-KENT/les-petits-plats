@@ -8,9 +8,10 @@ async function init(){
     const ingredientsData = await dataApi.getDataIngredients();
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
-    /* console.log("all",allRecipes) */
+    
 
     displayRecipes(allRecipes);
+   
     //get all list ingredients/appreils/ustensils
     const ustensilsList = noRepeatArray(ustensilsData) 
     const appareilsList = noRepeatArray(appareilsData)
@@ -28,10 +29,7 @@ async function init(){
         const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "").toString()
         if(searchedLetters.length > 2){
         filterSearchBar(searchedLetters,allRecipes)
-       }/* else if(e.target.value == ""){
-        cleanCardNonvisible();
-        } */
-    })
+       }})
 
    // search ingredients
 
@@ -45,7 +43,7 @@ async function init(){
     divIngreList.style.flexDirection = "column";
     creatTag(IngredientsList,allRecipes)
    
-    }
+    }})
 
 //seaarch Appareils
     champAppareils.addEventListener('keyup', (e) =>{
@@ -56,7 +54,8 @@ async function init(){
     filterChamps(searchedLetters,AppareilsList)
     divApparList.style.display = "flex"; // montrer le resultat de recherche
     divApparList.style.flexDirection = "column";
-    creatTag(AppareilsList,allRecipes)}
+    creatTag(AppareilsList,allRecipes)
+}
     
 })
 //search ustensiles
@@ -73,9 +72,9 @@ async function init(){
     
 })
 
-})
-    
 }
+    
+
 init();
 
 
@@ -90,6 +89,7 @@ function displayRecipes(Recipes){
    }
 
 
+   
     
 function noRepeatArray(arrData){
        var arr = arrData.flat();
@@ -113,13 +113,55 @@ function getIngredientsList(ingredientsData){
 const searchBar = document.getElementById("search-bar")
 
 function filterSearchBar(Letters,allRecipes){
-    
-    console.log("Letters",Letters )
+    const recipesVisibleCard = document.querySelectorAll(".recipes_card.visible")
+    console.log("recipesVisible.length",recipesVisibleCard.length)
+    if(recipesVisibleCard.length == 0){
+     
+       const filteredArray = allRecipes.filter(filterRec)
+       sectionRecipes.innerHTML= "";
+       console.log("KKK",filteredArray)
+       console.log("Letters",Letters)
 
+        displayRecipes(filteredArray)
+        cleanCardvisible()
+       const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
+       for(let i = 0; i <recipeAfter1stFilter.length; i++){
+       recipeAfter1stFilter[i].classList.add("visible")
+    }
+        checkResult();
+   
+       
+    }else if (recipesVisibleCard.length > 0){
+     var restRecipes = [];
+
+     console.log(restRecipes);
+    ////
+    for(let i = 0; i < recipesVisibleCard.length; i++ ){
+    var dataId = recipesVisibleCard[i].getAttribute("data-id");
+    const [rec] = allRecipes.reduce((accumulator, currentValue) => {
+      if (currentValue.id == dataId) {
+        return [...accumulator, currentValue];
+      }
+      return accumulator;
+    }, []);
+    restRecipes.push(rec)
+    }
+  
+    
+    const filteredArray = restRecipes.filter(filterRec)
     sectionRecipes.innerHTML= "";
     
-    const filteredArray = allRecipes.filter(filterRec)
-        function filterRec(recipe){
+        console.log("Letters",Letters)
+        console.log("filteredArray",filteredArray)
+        displayRecipes(filteredArray)
+        cleanCardvisible()
+     
+       
+        checkResult();
+   
+     }
+    
+    function filterRec(recipe){
         const arryIngredients = recipe.ingredients.map(obj => {return obj.ingredient.toLowerCase().replace(/\s/g, "")})
         if(arryIngredients.join().includes(Letters)){
             return true
@@ -131,20 +173,14 @@ function filterSearchBar(Letters,allRecipes){
         }
             return false
         }
-
-        console.log("Letters",Letters)
-        console.log("filteredArray",filteredArray)
-        displayRecipes(filteredArray)
-        const recipesVisible = document.querySelectorAll(".recipes_card")
-        recipesVisible.forEach((recipe)=> recipe.classList.add("visible"))
-        console.log("recipesVisible",recipesVisible)
-        checkResult();
+    
+        
 }
 
 
 function checkResult(){ //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card.visible")
+    const restCard = document.querySelectorAll(".recipes_card")
     
   /*   console.log("checkResult",restCard,divSearchbar) */
     if(restCard.length == 0){
@@ -186,10 +222,13 @@ function cleanListNonvisible(){
     const nonvisibleList = document.querySelectorAll(".list.nonvisible")
     nonvisibleList.forEach((list)=>list.classList.remove("nonvisible"))
 }
-function cleanCardNonvisible(){
-    const nonvisibleCard = document.querySelectorAll(".recipes_card.nonvisible")
-    nonvisibleCard.forEach((list)=>list.classList.remove("nonvisible"))
+function cleanCardvisible(){
+    const visibleCard = document.querySelectorAll(".recipes_card.visible")
+    visibleCard.forEach((list)=>list.classList.remove("visible"))
 }
+
+
+
 
 //creat Tag
 var tagList = []; // un tag list
@@ -212,10 +251,11 @@ function creatTag(lists,allRecipes){
            filterSearchBar(motDeCle,allRecipes) 
         }
         else return
-            
     })
     }
 }
+
+
 // close tag
 function closeTag(_this){
    const btnsClose = document.querySelectorAll(".div-tag .button-close")

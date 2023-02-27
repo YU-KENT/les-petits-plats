@@ -7,6 +7,7 @@ function recipesFactory(recipe,ingredients) {
     
     const newDiv = document.createElement("div");
     newDiv.classList.add("recipes_card","col","my-4")
+    newDiv.setAttribute("data-id",recipe.id)
     const recipesCard = `
     <div class="card rounded" style="width: 24rem; height: 23rem">
       <img src="icons/c7bebe.png" class="card-img-top h-50" alt="photo de plat">

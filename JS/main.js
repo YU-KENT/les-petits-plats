@@ -143,7 +143,7 @@ function filterSearchBar(Letters,allRecipes){
 
 function checkResult(){ //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
+    const restCard = document.querySelectorAll(".recipes_card.visible")
     
   /*   console.log("checkResult",restCard,divSearchbar) */
     if(restCard.length == 0){

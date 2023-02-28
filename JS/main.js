@@ -6,7 +6,7 @@ const champUstensiles = document.getElementById("search-champs_ustensiles")
 const divIngreList = document.querySelector(".ingredients-list")
 const divApparList = document.querySelector(".appareils-list")
 const divUstenList = document.querySelector(".ustensiles-list")
-
+const searchBar = document.getElementById("search-bar")
 async function init() {
     //get data
     const dataApi = new recipesApi("data/recipes.json");
@@ -31,19 +31,20 @@ async function init() {
     //search bar
     searchBar.addEventListener('keyup', e => {
 
-        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "").toString()
+        const searchedLetters = cleanUpSpecialChars(e.target.value)
         if (searchedLetters.length > 2) {
-            filterSearchBar(searchedLetters, allRecipes)
+            filterSearch(searchedLetters, allRecipes)
         } else if (e.target.value == "") {
             sectionRecipes.innerHTML = "";
             displayRecipes(allRecipes)
+            checkResult();
         }
     })
 
     // search ingredients
     champIngredients.addEventListener('keyup', (e) => {
         const IngredientsList = document.querySelectorAll(".ingredients-list p")
-        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+        const searchedLetters = cleanUpSpecialChars(e.target.value)
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
@@ -57,7 +58,7 @@ async function init() {
     //seaarch Appareils
     champAppareils.addEventListener('keyup', (e) => {
         const AppareilsList = document.querySelectorAll(".appareils-list p")
-        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+        const searchedLetters = cleanUpSpecialChars(e.target.value)
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
@@ -70,7 +71,7 @@ async function init() {
     //search ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         const ustensilesList = document.querySelectorAll(".ustensiles-list p")
-        const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+        const searchedLetters = cleanUpSpecialChars(e.target.value)
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, ustensilesList)
@@ -106,99 +107,59 @@ function getIngredientsList(ingredientsData) {
         for (let i = 0; i < obj.length; i++) {
             const newArry = obj[i].ingredient
             newList.push(newArry)
-        } })
+        }
+    })
     return newList;
 }
 
-//function search bar
-const searchBar = document.getElementById("search-bar")
+// 
 
-function filterSearchBar(Letters, allRecipes) {
-
+function cleanUpSpecialChars(str){
+let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
+return newStr;
+}
+ 
+// function search 
+function filterSearch(Letters, allRecipes) {
     function filterRec(recipe) {
         const arryIngredients = recipe.ingredients.map(obj => { return obj.ingredient.toLowerCase().replace(/\s/g, "") })
         if (arryIngredients.join().includes(Letters)) {
             return true
-        }
-        else if (recipe.name.toLowerCase().replace(/\s/g, "").includes(Letters)) {
+        } else if (cleanUpSpecialChars(recipe.name).includes(Letters)) {
             return true
-        } else if (recipe.description.toLowerCase().replace(/\s/g, "").includes(Letters)) {
+        } else if (cleanUpSpecialChars(recipe.appliance).includes(Letters)) {
+            return true
+        } else if (cleanUpSpecialChars(recipe.ustensils.join()).includes(Letters)) {
+            return true
+        } else if (cleanUpSpecialChars(recipe.description).includes(Letters)) {
             return true
         }
         return false
     }
-    const filteredArray = allRecipes.filter(filterRec)
-        sectionRecipes.innerHTML = "";
-        console.log("KKK", filteredArray,Letters)
-        displayRecipes(filteredArray)
-        cleanCardvisible()
-        const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
-        for (let i = 0; i < recipeAfter1stFilter.length; i++) {
-            recipeAfter1stFilter[i].classList.add("visible")
-        }
-        checkResult();
 
-}
-// function search by 3 champs
-function filterSearchChamp(Letters, allRecipes){
-    function filterRec(recipe) {
-        const arryIngredients = recipe.ingredients.map(obj => { return obj.ingredient.toLowerCase().replace(/\s/g, "") })
-        if (arryIngredients.join().includes(Letters)) {
-            return true
-        } else if (recipe.appliance.toLowerCase().replace(/\s/g, "").includes(Letters)) {
-            return true
-        } else if (recipe.ustensils.join().toLowerCase().replace(/\s/g, "").includes(Letters)) {
-            return true
-        } else if (recipe.description.toLowerCase().replace(/\s/g, "").includes(Letters)) {
-            return true
-        }
-        return false 
+    const recipesVisibleCard = document.querySelectorAll(".recipes_card")
+    var restRecipes = [];
+    for (let i = 0; i < recipesVisibleCard.length; i++) {
+        var dataId = recipesVisibleCard[i].getAttribute("data-id");
+        const [rec] = allRecipes.reduce((accumulator, currentValue) => {
+            if (currentValue.id == dataId) {
+                return [...accumulator, currentValue];
+            } return accumulator;
+        }, []);
+        restRecipes.push(rec)
     }
-                               
-    const recipesVisibleCard = document.querySelectorAll(".recipes_card.visible")
-    console.log("recipesVisible.length", recipesVisibleCard.length)
-    if (recipesVisibleCard.length == 0) {
 
-        const filteredArray = allRecipes.filter(filterRec)
-        sectionRecipes.innerHTML = "";
-        console.log("KKK", filteredArray) 
-        displayRecipes(filteredArray)
-        cleanCardvisible()
-        const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
-        for (let i = 0; i < recipeAfter1stFilter.length; i++) {
-            recipeAfter1stFilter[i].classList.add("visible")
-        }
-
-    } else if (recipesVisibleCard.length > 0) {
-        var restRecipes = [];
-
-        console.log("restRecipes",restRecipes);
-
-        for (let i = 0; i < recipesVisibleCard.length; i++) {
-            var dataId = recipesVisibleCard[i].getAttribute("data-id");
-            const [rec] = allRecipes.reduce((accumulator, currentValue) => {
-                if (currentValue.id == dataId) {
-                    return [...accumulator, currentValue];
-                }   return accumulator;
-                }, []);
-            restRecipes.push(rec)}
-
-        const filteredArray = restRecipes.filter(filterRec)
-        sectionRecipes.innerHTML = "";
-        console.log("filteredArray", filteredArray)
-        displayRecipes(filteredArray)
-        cleanCardvisible()
-        const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
-        for (let i = 0; i < recipeAfter1stFilter.length; i++) {
-            recipeAfter1stFilter[i].classList.add("visible")   
-        }
-        checkResult();
-    }
+    const filteredArray = restRecipes.filter(filterRec)
+    sectionRecipes.innerHTML = "";
+    console.log("filteredArray", filteredArray)
+    displayRecipes(filteredArray)
+    checkResult();
 }
+
 
 function checkResult() { //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card.visible")
+    const restCard = document.querySelectorAll(".recipes_card")
 
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
@@ -215,7 +176,7 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 // function filtre par mot
 function filterChampsList(letters, list) {
     for (let i = 0; i < list.length; i++) {
-        if (list[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)) {
+        if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
             list[i].classList.remove("nonvisible")
 
         } else {
@@ -229,11 +190,6 @@ function cleanListNonvisible() {
     const nonvisibleList = document.querySelectorAll(".list.nonvisible")
     nonvisibleList.forEach((list) => list.classList.remove("nonvisible"))
 }
-function cleanCardvisible() {
-    const visibleCard = document.querySelectorAll(".recipes_card.visible")
-    visibleCard.forEach((list) => list.classList.remove("visible"))
-}
-
 
 //creat Tag
 var tagList = []; //  tag list
@@ -244,14 +200,14 @@ function creatTag(lists, allRecipes) {
         lists[i].addEventListener("click", (e) => {
 
             const listSelected = e.target.textContent
-            const motDeCle = listSelected.toLowerCase().replace(/\s/g, "")
+            const motDeCle = cleanUpSpecialChars(listSelected)
             if (tagList.indexOf(listSelected) == -1) {
                 tagFactory(listSelected, e);
                 tagList.push(listSelected);
                 console.log('taglist', tagList, e.target.parentNode.classList)
                 parentList.style.display = "none";
-               
-                filterSearchChamp(motDeCle, allRecipes)
+
+                filterSearch(motDeCle, allRecipes)
             }
             else return
         })
@@ -263,20 +219,21 @@ function creatTag(lists, allRecipes) {
 async function closeTag(_this) {
     const dataApi = new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData();
-    console.log("closeTag",allRecipes)
-   /*  const btnsClose = document.querySelectorAll(".div-tag .button-close") */
+    console.log("closeTag", allRecipes)
     const tagLetters = _this.previousElementSibling.textContent
-    console.log("KKK",/*  btnsClose, */ tagLetters,tagList)
+    console.log("KKK",/*  btnsClose, */ tagLetters, tagList)
     _this.parentNode.remove();
     removeByValue(tagList, tagLetters)
-    cleanCardvisible();
-        for (let i = 0; i < tagList.length; i++) {
-            const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
-            console.log("tagList.length",tagList.length)
-            filterSearchChamp(restTagLetters,allRecipes)
-        }
-       
+    sectionRecipes.innerHTML = "";
+    displayRecipes(allRecipes)
+
+    for (let i = 0; i < tagList.length; i++) {
+        const restTagLetters = cleanUpSpecialChars(tagList[i])
+        console.log("tagList.length", tagList.length)
+        filterSearch(restTagLetters, allRecipes)
     }
+
+}
 
 // remove a value of the taglist
 function removeByValue(arr, value) {

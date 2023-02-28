@@ -56,25 +56,31 @@ function getIngredientsList(ingredientsData) {
     return newList;
 
 }
+
+function cleanUpSpecialChars(str){
+    let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
+    return newStr;
+    }
+
 //search bar
 const searchBar = document.getElementById("search-bar")
-searchBar.addEventListener('keyup', e => {
 
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+searchBar.addEventListener('keyup', e => {
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
     if (searchedLetters.length > 2) {
-        filterSearchBar(searchedLetters)
+        filterSearch(searchedLetters)
     } else if (e.target.value == "") {
         cleanCardNonvisible();
+        checkResult();
     }
 })
 
-function filterSearchBar(letters) {
+function filterSearch(letters) {
     const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
 
     for (let i = 0; i < recipesCard.length; i++) {
-        if (recipesCard[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)) {
+        if (cleanUpSpecialChars(recipesCard[i].textContent).includes(letters)) {
             recipesCard[i].classList.remove("nonvisible")
-
         } else {
             recipesCard[i].classList.add("nonvisible")
         }
@@ -86,8 +92,8 @@ function filterSearchBar(letters) {
 function checkResult() { //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
     const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-
-    /*   console.log("checkResult",restCard,divSearchbar) */
+    
+     console.log("checkResult",restCard.length) 
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
         divSearchbar.setAttribute("data-error-visible", true)
@@ -103,7 +109,7 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 function filterChamps(letters, list) {
     console.log("filterChamps")
     for (let i = 0; i < list.length; i++) {
-        if (list[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)) {
+        if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
             list[i].classList.remove("nonvisible")
 
         } else {
@@ -114,13 +120,12 @@ function filterChamps(letters, list) {
 // search ingredients
 champIngredients.addEventListener('keyup', (e) => {
     const IngredientsList = document.querySelectorAll(".ingredients-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
 
     if (e.target.value.length > 2) {
         filterChamps(searchedLetters, IngredientsList)
         divIngreList.style.display = "flex"; // montrer le resultat de recherche
         divIngreList.style.flexDirection = "column";
-
         creatTag(IngredientsList)
 
     }
@@ -129,7 +134,7 @@ champIngredients.addEventListener('keyup', (e) => {
 //seaarch Appareils
 champAppareils.addEventListener('keyup', (e) => {
     const AppareilsList = document.querySelectorAll(".appareils-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
 
     if (e.target.value.length > 2) {
         filterChamps(searchedLetters, AppareilsList)
@@ -142,13 +147,12 @@ champAppareils.addEventListener('keyup', (e) => {
 //search ustensiles
 champUstensiles.addEventListener('keyup', (e) => {
     const ustensilesList = document.querySelectorAll(".ustensiles-list p")
-    const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
 
     if (e.target.value.length > 2) {
         filterChamps(searchedLetters, ustensilesList)
         divUstenList.style.display = "flex"; // montrer le resultat de recherche
         divUstenList.style.flexDirection = "column";
-
         creatTag(ustensilesList)
     }
 
@@ -174,13 +178,13 @@ function creatTag(lists) {
         lists[i].addEventListener("click", (e) => {
 
             const listSelected = e.target.textContent
-            const motDeCle = listSelected.toLowerCase().replace(/\s/g, "")
+            const motDeCle = cleanUpSpecialChars(listSelected)
             if (tagList.indexOf(listSelected) == -1) {
                 tagFactory(listSelected, e);
                 tagList.push(listSelected);
                 parentList.style.display = "none";
                 cleanListNonvisible();
-                filterSearchBar(motDeCle)
+                filterSearch(motDeCle)
             }
             else return
 
@@ -197,7 +201,7 @@ function closeTag(_this) {
     cleanCardNonvisible();
     for (let i = 0; i < tagList.length; i++) {
         const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
-        filterSearchBar(restTagLetters)
+        filterSearch(restTagLetters)
         console.log("restTagLetters",restTagLetters)
     }
 

@@ -34,6 +34,9 @@ async function init() {
         const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "").toString()
         if (searchedLetters.length > 2) {
             filterSearchBar(searchedLetters, allRecipes)
+        } else if (e.target.value == "") {
+            sectionRecipes.innerHTML = "";
+            displayRecipes(allRecipes)
         }
     })
 
@@ -267,7 +270,6 @@ async function closeTag(_this) {
     _this.parentNode.remove();
     removeByValue(tagList, tagLetters)
     cleanCardvisible();
-
         for (let i = 0; i < tagList.length; i++) {
             const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
             console.log("tagList.length",tagList.length)

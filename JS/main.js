@@ -57,10 +57,10 @@ function getIngredientsList(ingredientsData) {
 
 }
 
-function cleanUpSpecialChars(str){
-    let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
+function cleanUpSpecialChars(str) {
+    let newStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
     return newStr;
-    }
+}
 
 //search bar
 const searchBar = document.getElementById("search-bar")
@@ -92,8 +92,8 @@ function filterSearch(letters) {
 function checkResult() { //Aucune recette correspondante à la recherche,message error
     const divSearchbar = document.querySelector(".search")
     const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-    
-     console.log("checkResult",restCard.length) 
+
+    console.log("checkResult", restCard.length)
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
         divSearchbar.setAttribute("data-error-visible", true)
@@ -202,7 +202,7 @@ function closeTag(_this) {
     for (let i = 0; i < tagList.length; i++) {
         const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
         filterSearch(restTagLetters)
-        console.log("restTagLetters",restTagLetters)
+        console.log("restTagLetters", restTagLetters)
     }
 
 }

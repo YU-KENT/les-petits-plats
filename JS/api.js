@@ -35,13 +35,7 @@ class recipesApi extends api{
  async getAllData(){
     return await this.getData()
  }
-
- async getDataName(){
-    const recipes = await this.getData()
-    const name = recipes.map(rec => {return rec.name})
-    return name;
-
- }
+ 
  async getDataIngredients(){
     const recipes = await this.getData()
     const ingredients = recipes.map(rec => {return rec.ingredients})

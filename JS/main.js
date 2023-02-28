@@ -1,5 +1,11 @@
 
 const sectionRecipes = document.querySelector(".recipes")
+const champIngredients = document.getElementById("search-champs_ingredients")
+const champAppareils = document.getElementById("search-champs_appareils")
+const champUstensiles = document.getElementById("search-champs_ustensiles")
+const divIngreList = document.querySelector(".ingredients-list")
+const divApparList = document.querySelector(".appareils-list")
+const divUstenList = document.querySelector(".ustensiles-list")
 
 async function init() {
     //get data
@@ -9,7 +15,6 @@ async function init() {
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
 
-
     displayRecipes(allRecipes);
 
     //get all list ingredients/appreils/ustensils
@@ -17,8 +22,8 @@ async function init() {
     const appareilsList = noRepeatArray(appareilsData)
     const ingreArry = getIngredientsList(ingredientsData)
     const ingredientsList = noRepeatArray(ingreArry)
-    /* console.log(appareilsList) */
-    // display list 
+
+    // display 3 list
     displayingredientList(ingredientsList);
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
@@ -33,14 +38,13 @@ async function init() {
     })
 
     // search ingredients
-
     champIngredients.addEventListener('keyup', (e) => {
         const IngredientsList = document.querySelectorAll(".ingredients-list p")
         const searchedLetters = e.target.value.toLowerCase().replace(/\s/g, "")
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
-            divIngreList.style.display = "flex"; // montrer le resultat de recherche
+            divIngreList.style.display = "flex"; // get search results
             divIngreList.style.flexDirection = "column";
             creatTag(IngredientsList, allRecipes)
 
@@ -72,11 +76,8 @@ async function init() {
 
             creatTag(ustensilesList, allRecipes)
         }
-
     })
-
 }
-
 
 init();
 
@@ -88,17 +89,12 @@ function displayRecipes(Recipes) {
         sectionRecipes.appendChild(Template.getRecipesCard());
         Template.getIngredientCard(recipe, ingredients);
     })
-
 }
-
-
-
 
 function noRepeatArray(arrData) {
     var arr = arrData.flat();
     var newArr = [...new Set(arr)];
     return newArr
-
 }
 
 function getIngredientsList(ingredientsData) {
@@ -107,10 +103,8 @@ function getIngredientsList(ingredientsData) {
         for (let i = 0; i < obj.length; i++) {
             const newArry = obj[i].ingredient
             newList.push(newArry)
-        }
-    })
+        } })
     return newList;
-
 }
 
 //function search bar
@@ -132,8 +126,7 @@ function filterSearchBar(Letters, allRecipes) {
     }
     const filteredArray = allRecipes.filter(filterRec)
         sectionRecipes.innerHTML = "";
-        console.log("KKK", filteredArray)
-        console.log("Letters", Letters)
+        console.log("KKK", filteredArray,Letters)
         displayRecipes(filteredArray)
         cleanCardvisible()
         const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
@@ -143,39 +136,35 @@ function filterSearchBar(Letters, allRecipes) {
         checkResult();
 
 }
-
+// function search by 3 champs
 function filterSearchChamp(Letters, allRecipes){
     function filterRec(recipe) {
         const arryIngredients = recipe.ingredients.map(obj => { return obj.ingredient.toLowerCase().replace(/\s/g, "") })
-        console.log("arryIngredients",arryIngredients)
         if (arryIngredients.join().includes(Letters)) {
             return true
-        }
-        else if (recipe.appliance.toLowerCase().replace(/\s/g, "").includes(Letters)) {
+        } else if (recipe.appliance.toLowerCase().replace(/\s/g, "").includes(Letters)) {
             return true
         } else if (recipe.ustensils.join().toLowerCase().replace(/\s/g, "").includes(Letters)) {
             return true
-        
         } else if (recipe.description.toLowerCase().replace(/\s/g, "").includes(Letters)) {
             return true
         }
-        return false
+        return false 
     }
+                               
     const recipesVisibleCard = document.querySelectorAll(".recipes_card.visible")
     console.log("recipesVisible.length", recipesVisibleCard.length)
     if (recipesVisibleCard.length == 0) {
 
         const filteredArray = allRecipes.filter(filterRec)
         sectionRecipes.innerHTML = "";
-        console.log("KKK", filteredArray)
-
+        console.log("KKK", filteredArray) 
         displayRecipes(filteredArray)
         cleanCardvisible()
         const recipeAfter1stFilter = document.querySelectorAll(".recipes_card")
         for (let i = 0; i < recipeAfter1stFilter.length; i++) {
             recipeAfter1stFilter[i].classList.add("visible")
         }
-
 
     } else if (recipesVisibleCard.length > 0) {
         var restRecipes = [];
@@ -187,9 +176,8 @@ function filterSearchChamp(Letters, allRecipes){
             const [rec] = allRecipes.reduce((accumulator, currentValue) => {
                 if (currentValue.id == dataId) {
                     return [...accumulator, currentValue];
-                }
-                return accumulator;
-            }, []);
+                }   return accumulator;
+                }, []);
             restRecipes.push(rec)}
 
         const filteredArray = restRecipes.filter(filterRec)
@@ -209,7 +197,6 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
     const divSearchbar = document.querySelector(".search")
     const restCard = document.querySelectorAll(".recipes_card.visible")
 
-    /*   console.log("checkResult",restCard,divSearchbar) */
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
         divSearchbar.setAttribute("data-error-visible", true)
@@ -220,20 +207,10 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
     }
 }
 
-// search par 3 champs
 
-const champIngredients = document.getElementById("search-champs_ingredients")
-const champAppareils = document.getElementById("search-champs_appareils")
-const champUstensiles = document.getElementById("search-champs_ustensiles")
-const divIngreList = document.querySelector(".ingredients-list")
 
-const divApparList = document.querySelector(".appareils-list")
-const appraListLength = divApparList.length
-const divUstenList = document.querySelector(".ustensiles-list")
-const ustenListLength = divUstenList.length
 // function filtre par mot
 function filterChampsList(letters, list) {
-    console.log("filterChamps")
     for (let i = 0; i < list.length; i++) {
         if (list[i].textContent.toLowerCase().replace(/\s/g, "").includes(letters)) {
             list[i].classList.remove("nonvisible")
@@ -255,13 +232,9 @@ function cleanCardvisible() {
 }
 
 
-
-
 //creat Tag
-var tagList = []; // un tag list
+var tagList = []; //  tag list
 function creatTag(lists, allRecipes) {
-    console.log("creatTag")
-    console.log("allRecipes", allRecipes)
     const parentList = lists[0].parentNode
 
     for (let i = 0; i < lists.length; i++) {
@@ -274,7 +247,7 @@ function creatTag(lists, allRecipes) {
                 tagList.push(listSelected);
                 console.log('taglist', tagList, e.target.parentNode.classList)
                 parentList.style.display = "none";
-                /* cleanListNonvisible(); */
+               
                 filterSearchChamp(motDeCle, allRecipes)
             }
             else return
@@ -284,23 +257,29 @@ function creatTag(lists, allRecipes) {
 
 
 // close tag
-function closeTag(_this) {
-    const btnsClose = document.querySelectorAll(".div-tag .button-close")
+async function closeTag(_this) {
+    const dataApi = new recipesApi("data/recipes.json");
+    const allRecipes = await dataApi.getAllData();
+    console.log("closeTag",allRecipes)
+   /*  const btnsClose = document.querySelectorAll(".div-tag .button-close") */
     const tagLetters = _this.previousElementSibling.textContent
-    console.log("KKK", btnsClose, tagLetters)
+    console.log("KKK",/*  btnsClose, */ tagLetters,tagList)
     _this.parentNode.remove();
     removeByValue(tagList, tagLetters)
-    /* cleanCardNonvisible(); */
-    for (let i = 0; i < tagList.length; i++) {
-        const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
-        filterSearchChamp(restTagLetters)
+    cleanCardvisible();
+
+        for (let i = 0; i < tagList.length; i++) {
+            const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
+            console.log("tagList.length",tagList.length)
+            filterSearchChamp(restTagLetters,allRecipes)
+        }
+       
     }
 
-}
-// remove un value dans taglist
-function removeByValue(arr, val) {
+// remove a value of the taglist
+function removeByValue(arr, value) {
     for (var i = 0; i < arr.length; i++) {
-        if (arr[i] == val) {
+        if (arr[i] == value) {
             arr.splice(i, 1);
             break;
         }

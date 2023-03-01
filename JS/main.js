@@ -72,7 +72,7 @@ function getIngredients(ingredients){
 
 
 function cleanUpSpecialChars(str) {
-    let newStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
+    let newStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase();
     return newStr;
 }
 
@@ -90,11 +90,12 @@ searchBar.addEventListener('keyup', e => {
 })
 ///////
 function Testdisplayrecipes(allRecipes){
-const header = document.querySelector("header")
+const header = document.querySelector("header");
 allRecipes.forEach(recipe=>{
-    const newP = document.createElement("p")
-    newP.innerHTML= recipe.name + getIngredients(recipe.ingredients) + recipe.description + recipe.appliance +recipe.ustensils 
-    header.appendChild(newP)
+    const newP = document.createElement("p");
+    newP.classList.add("recipes_card");
+    newP.innerHTML= recipe.name + getIngredients(recipe.ingredients) + recipe.description + recipe.appliance +recipe.ustensils;
+    header.appendChild(newP);
 })
 
 }

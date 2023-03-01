@@ -1,12 +1,12 @@
 
-const sectionRecipes = document.querySelector(".recipes")
-const champIngredients = document.getElementById("search-champs_ingredients")
-const champAppareils = document.getElementById("search-champs_appareils")
-const champUstensiles = document.getElementById("search-champs_ustensiles")
-const divIngreList = document.querySelector(".ingredients-list")
-const divApparList = document.querySelector(".appareils-list")
-const divUstenList = document.querySelector(".ustensiles-list")
-const searchBar = document.getElementById("search-bar")
+const sectionRecipes = document.querySelector(".recipes");
+const champIngredients = document.getElementById("search-champs_ingredients");
+const champAppareils = document.getElementById("search-champs_appareils");
+const champUstensiles = document.getElementById("search-champs_ustensiles");
+const divIngreList = document.querySelector(".ingredients-list");
+const divApparList = document.querySelector(".appareils-list");
+const divUstenList = document.querySelector(".ustensiles-list");
+const searchBar = document.getElementById("search-bar");
 async function init() {
     //get data
     const dataApi = new recipesApi("data/recipes.json");
@@ -18,10 +18,10 @@ async function init() {
     displayRecipes(allRecipes);
 
     //get all list ingredients/appreils/ustensils
-    const ustensilsList = noRepeatArray(ustensilsData)
-    const appareilsList = noRepeatArray(appareilsData)
-    const ingreArry = getIngredientsList(ingredientsData)
-    const ingredientsList = noRepeatArray(ingreArry)
+    const ustensilsList = noRepeatArray(ustensilsData);
+    const appareilsList = noRepeatArray(appareilsData);
+    const ingreArry = getIngredientsList(ingredientsData);
+    const ingredientsList = noRepeatArray(ingreArry);
 
     // display 3 list
     displayingredientList(ingredientsList);
@@ -36,49 +36,49 @@ async function init() {
             filterSearch(searchedLetters, allRecipes)
         } else if (e.target.value == "") {
             sectionRecipes.innerHTML = "";
-            displayRecipes(allRecipes)
+            displayRecipes(allRecipes);
             checkResult();
         }
     })
 
     // search ingredients
     champIngredients.addEventListener('keyup', (e) => {
-        const IngredientsList = document.querySelectorAll(".ingredients-list p")
-        const searchedLetters = cleanUpSpecialChars(e.target.value)
+        const IngredientsList = document.querySelectorAll(".ingredients-list p");
+        const searchedLetters = cleanUpSpecialChars(e.target.value);
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
             divIngreList.style.display = "flex"; // get search results
             divIngreList.style.flexDirection = "column";
-            creatTag(IngredientsList, allRecipes)
+            creatTag(IngredientsList, allRecipes);
 
         }
     })
 
     //seaarch Appareils
     champAppareils.addEventListener('keyup', (e) => {
-        const AppareilsList = document.querySelectorAll(".appareils-list p")
-        const searchedLetters = cleanUpSpecialChars(e.target.value)
+        const AppareilsList = document.querySelectorAll(".appareils-list p");
+        const searchedLetters = cleanUpSpecialChars(e.target.value);
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
             divApparList.style.display = "flex"; // montrer le resultat de recherche
             divApparList.style.flexDirection = "column";
-            creatTag(AppareilsList, allRecipes)
+            creatTag(AppareilsList, allRecipes);
         }
 
     })
     //search ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
-        const ustensilesList = document.querySelectorAll(".ustensiles-list p")
-        const searchedLetters = cleanUpSpecialChars(e.target.value)
+        const ustensilesList = document.querySelectorAll(".ustensiles-list p");
+        const searchedLetters = cleanUpSpecialChars(e.target.value);
 
         if (e.target.value.length > 2) {
-            filterChampsList(searchedLetters, ustensilesList)
+            filterChampsList(searchedLetters, ustensilesList);
             divUstenList.style.display = "flex"; // montrer le resultat de recherche
             divUstenList.style.flexDirection = "column";
 
-            creatTag(ustensilesList, allRecipes)
+            creatTag(ustensilesList, allRecipes);
         }
     })
 }
@@ -88,7 +88,7 @@ init();
 
 function displayRecipes(Recipes) {
     Recipes.forEach(recipe => {
-        const ingredients = recipe.ingredients
+        const ingredients = recipe.ingredients;
         const Template = new recipesFactory(recipe, ingredients);
         sectionRecipes.appendChild(Template.getRecipesCard());
         Template.getIngredientCard(recipe, ingredients);
@@ -98,15 +98,15 @@ function displayRecipes(Recipes) {
 function noRepeatArray(arrData) {
     var arr = arrData.flat();
     var newArr = [...new Set(arr)];
-    return newArr
+    return newArr;
 }
 
 function getIngredientsList(ingredientsData) {
     var newList = [];
     ingredientsData.forEach((obj) => {
         for (let i = 0; i < obj.length; i++) {
-            const newArry = obj[i].ingredient
-            newList.push(newArry)
+            const newArry = obj[i].ingredient;
+            newList.push(newArry);
         }
     })
     return newList;
@@ -115,29 +115,29 @@ function getIngredientsList(ingredientsData) {
 // 
 
 function cleanUpSpecialChars(str){
-let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase()
+let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase();
 return newStr;
 }
  
 // function search 
 function filterSearch(Letters, allRecipes) {
     function filterRec(recipe) {
-        const arryIngredients = recipe.ingredients.map(obj => { return obj.ingredient.toLowerCase().replace(/\s/g, "") })
+        const arryIngredients = recipe.ingredients.map(obj => { return cleanUpSpecialChars(obj.ingredient)});
         if (arryIngredients.join().includes(Letters)) {
-            return true
+            return true;
         } else if (cleanUpSpecialChars(recipe.name).includes(Letters)) {
-            return true
+            return true;
         } else if (cleanUpSpecialChars(recipe.appliance).includes(Letters)) {
-            return true
+            return true;
         } else if (cleanUpSpecialChars(recipe.ustensils.join()).includes(Letters)) {
-            return true
+            return true;
         } else if (cleanUpSpecialChars(recipe.description).includes(Letters)) {
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 
-    const recipesVisibleCard = document.querySelectorAll(".recipes_card")
+    const recipesVisibleCard = document.querySelectorAll(".recipes_card");
     var restRecipes = [];
     for (let i = 0; i < recipesVisibleCard.length; i++) {
         var dataId = recipesVisibleCard[i].getAttribute("data-id");
@@ -146,10 +146,10 @@ function filterSearch(Letters, allRecipes) {
                 return [...accumulator, currentValue];
             } return accumulator;
         }, []);
-        restRecipes.push(rec)
+        restRecipes.push(rec);
     }
 
-    const filteredArray = restRecipes.filter(filterRec)
+    const filteredArray = restRecipes.filter(filterRec);
     sectionRecipes.innerHTML = "";
     console.log("filteredArray", filteredArray)
     displayRecipes(filteredArray)
@@ -158,16 +158,16 @@ function filterSearch(Letters, allRecipes) {
 
 
 function checkResult() { //Aucune recette correspondante à la recherche,message error
-    const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card")
+    const divSearchbar = document.querySelector(".search");
+    const restCard = document.querySelectorAll(".recipes_card");
 
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
-        divSearchbar.setAttribute("data-error-visible", true)
+        divSearchbar.setAttribute("data-error-visible", true);
     }
     else {
         divSearchbar.removeAttribute("data-error");
-        divSearchbar.removeAttribute("data-error-visible")
+        divSearchbar.removeAttribute("data-error-visible");
     }
 }
 
@@ -177,30 +177,30 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 function filterChampsList(letters, list) {
     for (let i = 0; i < list.length; i++) {
         if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
-            list[i].classList.remove("nonvisible")
+            list[i].classList.remove("nonvisible");
 
         } else {
-            list[i].classList.add("nonvisible")
+            list[i].classList.add("nonvisible");
         }
     }
 }
 
 
 function cleanListNonvisible() {
-    const nonvisibleList = document.querySelectorAll(".list.nonvisible")
-    nonvisibleList.forEach((list) => list.classList.remove("nonvisible"))
+    const nonvisibleList = document.querySelectorAll(".list.nonvisible");
+    nonvisibleList.forEach((list) => list.classList.remove("nonvisible"));
 }
 
 //creat Tag
 var tagList = []; //  tag list
 function creatTag(lists, allRecipes) {
-    const parentList = lists[0].parentNode
+    const parentList = lists[0].parentNode;
 
     for (let i = 0; i < lists.length; i++) {
         lists[i].addEventListener("click", (e) => {
 
-            const listSelected = e.target.textContent
-            const motDeCle = cleanUpSpecialChars(listSelected)
+            const listSelected = e.target.textContent;
+            const motDeCle = cleanUpSpecialChars(listSelected);
             if (tagList.indexOf(listSelected) == -1) {
                 tagFactory(listSelected, e);
                 tagList.push(listSelected);
@@ -219,7 +219,6 @@ function creatTag(lists, allRecipes) {
 async function closeTag(_this) {
     const dataApi = new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData();
-    console.log("closeTag", allRecipes)
     const tagLetters = _this.previousElementSibling.textContent
     console.log("KKK",/*  btnsClose, */ tagLetters, tagList)
     _this.parentNode.remove();
@@ -228,9 +227,8 @@ async function closeTag(_this) {
     displayRecipes(allRecipes)
 
     for (let i = 0; i < tagList.length; i++) {
-        const restTagLetters = cleanUpSpecialChars(tagList[i])
-        console.log("tagList.length", tagList.length)
-        filterSearch(restTagLetters, allRecipes)
+        const restTagLetters = cleanUpSpecialChars(tagList[i]);
+        filterSearch(restTagLetters, allRecipes);
     }
 
 }

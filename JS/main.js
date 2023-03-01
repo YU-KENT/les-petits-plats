@@ -254,11 +254,10 @@ function gestionListApresBlur(_this) {
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
     if (_this.value == "") {
-        const parentList = _this.parentNode.lastElementChild
-
+        const parentList = _this.parentNode.lastElementChild;
         parentList.style.display = "none";
         _this.style.width = '170px',
-            cleanListNonvisible();
+        cleanListNonvisible();
         arrowDown.style.visibility = "visible";
         arrowUp.style.visibility = "hidden";
     }

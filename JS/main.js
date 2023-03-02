@@ -29,7 +29,6 @@ async function init() {
 }
 init();
 function displayRecipes(Recipes) {
-    console.log("Recipes", Recipes)
     Recipes.forEach(recipe => {
         const ingredients = recipe.ingredients
         const Template = new recipesFactory(recipe, ingredients);
@@ -94,7 +93,6 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
     const divSearchbar = document.querySelector(".search")
     const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
 
-    console.log("checkResult", restCard.length)
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
         divSearchbar.setAttribute("data-error-visible", true)
@@ -108,7 +106,7 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 
 // function filtre par mot
 function filterChamps(letters, list) {
-    console.log("filterChamps")
+
     for (let i = 0; i < list.length; i++) {
         if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
             list[i].classList.remove("nonvisible")
@@ -172,12 +170,9 @@ function cleanCardNonvisible() {
 //creat Tag
 var tagList = []; // un tag list
 function creatTag(lists) {
-    console.log("creatTag")
     const parentList = lists[0].parentNode
-
     for (let i = 0; i < lists.length; i++) {
         lists[i].addEventListener("click", (e) => {
-
             const listSelected = e.target.textContent
             const motDeCle = cleanUpSpecialChars(listSelected)
             if (tagList.indexOf(listSelected) == -1) {
@@ -194,16 +189,13 @@ function creatTag(lists) {
 }
 // close tag
 function closeTag(_this) {
-    const btnsClose = document.querySelectorAll(".div-tag .button-close")
     const tagLetters = _this.previousElementSibling.textContent
-    console.log("KKK", btnsClose, tagLetters)
     _this.parentNode.remove();
     removeByValue(tagList, tagLetters)
     cleanCardNonvisible();
     for (let i = 0; i < tagList.length; i++) {
         const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
         filterSearch(restTagLetters)
-        console.log("restTagLetters", restTagLetters)
     }
 
 }
@@ -229,7 +221,6 @@ function gestionListApresBlur(_this) {
     const arrowUp = arrowDown.nextElementSibling;
     if (_this.value == "") {
         const parentList = _this.parentNode.lastElementChild
-
         parentList.style.display = "none";
         _this.style.width = '170px',
             cleanListNonvisible();

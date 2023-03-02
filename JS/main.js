@@ -26,9 +26,6 @@ async function init() {
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
 
-    //test
-    Testdisplayrecipes(allRecipes)
-    ////
 }
 init();
 function displayRecipes(Recipes) {
@@ -59,16 +56,6 @@ function getIngredientsList(ingredientsData) {
     return newList;
 
 }
-/////
-function getIngredients(ingredients){
-    var newList = [];
-    for (let i = 0; i < ingredients.length; i++) {
-        const newArry = ingredients[i].ingredient;
-        newList.push(newArry);
-    }
-    return newList.join();
-}
-////////
 
 
 function cleanUpSpecialChars(str) {
@@ -88,18 +75,6 @@ searchBar.addEventListener('keyup', e => {
         checkResult();
     }
 })
-///////
-function Testdisplayrecipes(allRecipes){
-const header = document.querySelector("header");
-allRecipes.forEach(recipe=>{
-    const newP = document.createElement("p");
-    newP.classList.add("recipes_card");
-    newP.innerHTML= recipe.name + getIngredients(recipe.ingredients) + recipe.description + recipe.appliance +recipe.ustensils;
-    header.appendChild(newP);
-})
-
-}
-///////////////////////
 
 function filterSearch(letters) {
     const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")

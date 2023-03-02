@@ -150,6 +150,9 @@ button{
     
     font-weight: 700;
 }
+.search-champs {
+    flex-direction: row;
+}
 .list{
     color:#FFFFFF;
     font-size: 18px;

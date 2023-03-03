@@ -1,14 +1,3 @@
-/* async function getPhotographersData() {//recupere des data photographer
-
-    const res = await fetch("data/recipes.json");
-    const data = await res.json();
-    const DataName = data.recipes;
-
-    return ({recipes: DataName})// retourner le tableau photographers seulement une fois récupéré
-}
-
- */
-
 
 class api {
    constructor(url) {

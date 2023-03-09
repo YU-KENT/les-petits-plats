@@ -120,6 +120,7 @@ return newStr;
  
 // function search 
 function filterSearch(Letters, allRecipes) {
+
     function filterRec(recipe) {
         const arryIngredients = recipe.ingredients.map(obj => { return cleanUpSpecialChars(obj.ingredient)});
         if (arryIngredients.join().includes(Letters)) {
@@ -135,7 +136,7 @@ function filterSearch(Letters, allRecipes) {
         }
         return false;
     }
-
+    
     const recipesVisibleCard = document.querySelectorAll(".recipes_card");
     var restRecipes = [];
     for (let i = 0; i < recipesVisibleCard.length; i++) {
@@ -203,7 +204,6 @@ function creatTag(lists, allRecipes) {
             if (tagList.indexOf(listSelected) == -1) {
                 tagFactory(listSelected, e);
                 tagList.push(listSelected);
-                console.log('taglist', tagList, e.target.parentNode.classList)
                 parentList.style.display = "none";
 
                 filterSearch(motDeCle, allRecipes)
@@ -219,7 +219,6 @@ async function closeTag(_this) {
     const dataApi = new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData();
     const tagLetters = _this.previousElementSibling.textContent
-    console.log("KKK",/*  btnsClose, */ tagLetters, tagList)
     _this.parentNode.remove();
     removeByValue(tagList, tagLetters)
     sectionRecipes.innerHTML = "";

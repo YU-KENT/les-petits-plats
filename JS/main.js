@@ -28,7 +28,7 @@ async function init() {
 
 }
 init();
-function displayRecipes(Recipes) {
+function displayRecipes(Recipes) { // display recipes cards
     Recipes.forEach(recipe => {
         const ingredients = recipe.ingredients
         const Template = new recipesFactory(recipe, ingredients);
@@ -37,7 +37,7 @@ function displayRecipes(Recipes) {
     })
 }
 
-function noRepeatArray(arrData) {
+function noRepeatArray(arrData) { //get 1D array
     var arr = arrData.flat();
     var newArr = [...new Set(arr)];
     return newArr
@@ -62,21 +62,21 @@ function cleanUpSpecialChars(str) {
     return newStr;
 }
 
-//search bar
+//function search bar
 const searchBar = document.getElementById("search-bar")
 
 searchBar.addEventListener('keyup', e => {
     const searchedLetters = cleanUpSpecialChars(e.target.value)
-    if (searchedLetters.length > 2) {
-        filterSearch(searchedLetters)
-    } else if (e.target.value == "") {
+    if (searchedLetters.length > 2) { // When the user enters 3 letters, run function search
+        filterSearch(searchedLetters)   
+    } else if (e.target.value == "") { // when search bar is empty, display all recipes
         cleanCardNonvisible();
         checkResult();
     }
 })
 
 function filterSearch(letters) {
-    const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
+    const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")//get availables recipes
 
     for (let i = 0; i < recipesCard.length; i++) {
         if (cleanUpSpecialChars(recipesCard[i].textContent).includes(letters)) {
@@ -104,7 +104,7 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 }
 
 
-// function filtre par mot
+// function find the key word in 3 lists
 function filterChamps(letters, list) {
 
     for (let i = 0; i < list.length; i++) {
@@ -116,7 +116,7 @@ function filterChamps(letters, list) {
         }
     }
 }
-// search ingredients
+// search the ingredient in list ingredient
 champIngredients.addEventListener('keyup', (e) => {
     const IngredientsList = document.querySelectorAll(".ingredients-list p")
     const searchedLetters = cleanUpSpecialChars(e.target.value)
@@ -125,12 +125,12 @@ champIngredients.addEventListener('keyup', (e) => {
         filterChamps(searchedLetters, IngredientsList)
         divIngreList.style.display = "flex"; // montrer le resultat de recherche
         divIngreList.style.flexDirection = "column";
-        creatTag(IngredientsList)
+        creatTag(IngredientsList) // creat tag
 
     }
 })
 
-//seaarch Appareils
+//seaarch the Appareil in list Appareils
 champAppareils.addEventListener('keyup', (e) => {
     const AppareilsList = document.querySelectorAll(".appareils-list p")
     const searchedLetters = cleanUpSpecialChars(e.target.value)
@@ -143,7 +143,7 @@ champAppareils.addEventListener('keyup', (e) => {
     }
 
 })
-//search ustensiles
+//search ustensile in list ustensiles
 champUstensiles.addEventListener('keyup', (e) => {
     const ustensilesList = document.querySelectorAll(".ustensiles-list p")
     const searchedLetters = cleanUpSpecialChars(e.target.value)
@@ -172,15 +172,17 @@ var tagList = []; // un tag list
 function creatTag(lists) {
     const parentList = lists[0].parentNode
     for (let i = 0; i < lists.length; i++) {
+
         lists[i].addEventListener("click", (e) => {
             const listSelected = e.target.textContent
             const motDeCle = cleanUpSpecialChars(listSelected)
-            if (tagList.indexOf(listSelected) == -1) {
-                tagFactory(listSelected, e);
-                tagList.push(listSelected);
+            if (tagList.indexOf(listSelected) == -1) { //if key word not exist in tag list
+                tagFactory(listSelected, e); //creat a tag with this key word
+                tagList.push(listSelected); // add this key word in tag list
                 parentList.style.display = "none";
                 cleanListNonvisible();
-                filterSearch(motDeCle)
+                filterSearch(motDeCle) // search this key word in all recipes
+                console.log(tagList)
             }
             else return
 
@@ -191,10 +193,11 @@ function creatTag(lists) {
 function closeTag(_this) {
     const tagLetters = _this.previousElementSibling.textContent
     _this.parentNode.remove();
-    removeByValue(tagList, tagLetters)
+    removeByValue(tagList, tagLetters)// remove this key word in tag list
     cleanCardNonvisible();
-    for (let i = 0; i < tagList.length; i++) {
-        const restTagLetters = tagList[i].toLowerCase().replace(/\s/g, "")
+    for (let i = 0; i < tagList.length; i++) { // get reste of tag list, run function search
+        console.log(tagList)
+        const restTagLetters = cleanUpSpecialChars(tagList[i])
         filterSearch(restTagLetters)
     }
 

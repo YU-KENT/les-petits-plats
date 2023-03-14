@@ -1,4 +1,4 @@
-
+//dom eles
 const sectionRecipes = document.querySelector(".recipes");
 const champIngredients = document.getElementById("search-champs_ingredients");
 const champAppareils = document.getElementById("search-champs_appareils");
@@ -7,6 +7,7 @@ const divIngreList = document.querySelector(".ingredients-list");
 const divApparList = document.querySelector(".appareils-list");
 const divUstenList = document.querySelector(".ustensiles-list");
 const searchBar = document.getElementById("search-bar");
+
 async function init() {
     //get data
     const dataApi = new recipesApi("data/recipes.json");
@@ -14,7 +15,7 @@ async function init() {
     const ingredientsData = await dataApi.getDataIngredients();
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
-
+    //display all recipes
     displayRecipes(allRecipes);
 
     //get all list ingredients/appreils/ustensils
@@ -28,29 +29,28 @@ async function init() {
     displayAppareilsList(appareilsList);
     displayUstensilesList(ustensilsList);
 
-    //search bar
+    //function search bar
     searchBar.addEventListener('keyup', e => {
-
         const searchedLetters = cleanUpSpecialChars(e.target.value)
-        if (searchedLetters.length > 2) {
-            filterSearch(searchedLetters, allRecipes)
-        } else if (e.target.value == "") {
+        if (searchedLetters.length > 2) { // when user enters more than 2 letters
+            filterSearch(searchedLetters, allRecipes)// run function search
+        } else if (e.target.value == "") { // if search bar is empty, display all recipes
             sectionRecipes.innerHTML = "";
             displayRecipes(allRecipes);
             checkResult();
         }
     })
 
-    // search ingredients
+    // search ingredient in list ingredients
     champIngredients.addEventListener('keyup', (e) => {
         const IngredientsList = document.querySelectorAll(".ingredients-list p");
         const searchedLetters = cleanUpSpecialChars(e.target.value);
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
-            divIngreList.style.display = "flex"; // get search results
+            divIngreList.style.display = "flex"; // get a list results 
             divIngreList.style.flexDirection = "column";
-            creatTag(IngredientsList, allRecipes);
+            creatTag(IngredientsList, allRecipes); // creat tag
 
         }
     })
@@ -62,7 +62,7 @@ async function init() {
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
-            divApparList.style.display = "flex"; // montrer le resultat de recherche
+            divApparList.style.display = "flex"; // get a list results 
             divApparList.style.flexDirection = "column";
             creatTag(AppareilsList, allRecipes);
         }
@@ -75,7 +75,7 @@ async function init() {
 
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, ustensilesList);
-            divUstenList.style.display = "flex"; // montrer le resultat de recherche
+            divUstenList.style.display = "flex"; // get a list results 
             divUstenList.style.flexDirection = "column";
 
             creatTag(ustensilesList, allRecipes);
@@ -86,7 +86,7 @@ async function init() {
 init();
 
 
-function displayRecipes(Recipes) {
+function displayRecipes(Recipes) { // function display recipes
     Recipes.forEach(recipe => {
         const ingredients = recipe.ingredients;
         const Template = new recipesFactory(recipe, ingredients);
@@ -119,9 +119,9 @@ let newStr =  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g
 return newStr;
 }
  
-// function search 
+// function main search 
 function filterSearch(Letters, allRecipes) {
-    function filterRec(recipe) {
+    function filterRec(recipe) { //filter all data receipes with letters
         const arryIngredients = recipe.ingredients.map(obj => { return cleanUpSpecialChars(obj.ingredient)});
         if (arryIngredients.join().includes(Letters)) {
             return true;
@@ -137,19 +137,19 @@ function filterSearch(Letters, allRecipes) {
         return false;
     }
 
-    const recipesVisibleCard = document.querySelectorAll(".recipes_card");
-    var restRecipes = [];
+    const recipesVisibleCard = document.querySelectorAll(".recipes_card");// get all availables recipes
+    var restRecipes = []; // creat a data array with all availables recipes
     for (let i = 0; i < recipesVisibleCard.length; i++) {
-        var dataId = recipesVisibleCard[i].getAttribute("data-id");
+        var dataId = recipesVisibleCard[i].getAttribute("data-id");// get data-id, find data
         const [rec] = allRecipes.reduce((accumulator, currentValue) => {
             if (currentValue.id == dataId) {
                 return [...accumulator, currentValue];
             } return accumulator;
         }, []);
-        restRecipes.push(rec);
+        restRecipes.push(rec);//push data into the array
     }
 
-    const filteredArray = restRecipes.filter(filterRec);
+    const filteredArray = restRecipes.filter(filterRec); // search in availables data array
     sectionRecipes.innerHTML = "";
     console.log("filteredArray", filteredArray)
     displayRecipes(filteredArray)
@@ -173,7 +173,7 @@ function checkResult() { //Aucune recette correspondante à la recherche,message
 
 
 
-// function filtre par mot
+// function filter the list by letters
 function filterChampsList(letters, list) {
     for (let i = 0; i < list.length; i++) {
         if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
@@ -201,13 +201,12 @@ function creatTag(lists, allRecipes) {
 
             const listSelected = e.target.textContent;
             const motDeCle = cleanUpSpecialChars(listSelected);
-            if (tagList.indexOf(listSelected) == -1) {
-                tagFactory(listSelected, e);
-                tagList.push(listSelected);
-                console.log('taglist', tagList, e.target.parentNode.classList)
+            if (tagList.indexOf(listSelected) == -1) { //if key word not exist in tag list
+                tagFactory(listSelected, e);// creat a tag with this key word
+                tagList.push(listSelected); // push key word in tag list
                 parentList.style.display = "none";
 
-                filterSearch(motDeCle, allRecipes)
+                filterSearch(motDeCle, allRecipes) // run function search
             }
             else return
         })
@@ -220,13 +219,12 @@ async function closeTag(_this) {
     const dataApi = new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData();
     const tagLetters = _this.previousElementSibling.textContent
-    console.log("KKK",/*  btnsClose, */ tagLetters, tagList)
-    _this.parentNode.remove();
-    removeByValue(tagList, tagLetters)
-    sectionRecipes.innerHTML = "";
-    displayRecipes(allRecipes)
+    _this.parentNode.remove(); // surpprimer tag
+    removeByValue(tagList, tagLetters) // surpprimer this tag in tag list
+    sectionRecipes.innerHTML = "";// empty the section recipes
+    displayRecipes(allRecipes)// display all recipes
 
-    for (let i = 0; i < tagList.length; i++) {
+    for (let i = 0; i < tagList.length; i++) { // run function search
         const restTagLetters = cleanUpSpecialChars(tagList[i]);
         filterSearch(restTagLetters, allRecipes);
     }

@@ -17,10 +17,10 @@ async function init() {
 
     displayRecipes(allRecipes);
 
-///////
+/* ///////
     displayTestRecipes(allRecipes);
 /////////////////
-
+ */
     //get all list ingredients/appreils/ustensils
     const ustensilsList = noRepeatArray(ustensilsData) 
     const appareilsList = noRepeatArray(appareilsData)
@@ -88,7 +88,7 @@ async function init() {
 
 init();
 
-///////////// test
+/* ///////////// test
 function displayTestRecipes(allRecipes){
     const header = document.querySelector("header");
 allRecipes.forEach((recipe)=>{
@@ -101,7 +101,7 @@ allRecipes.forEach((recipe)=>{
     header.appendChild(newP);
 });
 }
-////////////
+//////////// */
 function displayRecipes(Recipes) {
     Recipes.forEach(recipe => {
         const ingredients = recipe.ingredients;

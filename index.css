@@ -123,27 +123,37 @@ button{
   display:flex;
 }
 .ingredients-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height:397px;
+    border-radius: 5px;
     cursor: pointer;
     background-color: #3282F7;
     margin-left: 0px;
     margin-right: 0px;
     overflow: hidden;
-    display: none;
+    display:none;
 }
 .appareils-list{
+    display: grid;
+    grid-template-columns: 1fr;
+    height:397px;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color: #68D9A4;
-    display: none;
+    display:none;
 }
 
 .ustensiles-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height:397px;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color:#ED6454;
-    display: none;
+    display:none;
 }
 .search-champs input::placeholder{
     color:#FFFFFF;

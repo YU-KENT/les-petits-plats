@@ -56,9 +56,12 @@ button{
   .search[data-error-visible="true"]::after {
     opacity: 1;
   }
-/*   .search[data-error-visible="true"] .text-control {
-    border: 2px solid #e54858;
-  } */
+  input:focus::placeholder {
+    font-weight: 200;
+    opacity: 0.5;
+}
+
+
 .ingredients_nom{
     font-weight: 700;
 }
@@ -74,6 +77,9 @@ button{
 }
 .rec_ingredients{
     padding-right: 0;
+}
+.iconSearch{
+    content:url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="32" height="32" viewBox="0 0 24 24"%3E%3Cpath fill="black" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.612 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3l-1.4 1.4ZM9.5 14q1.875 0 3.188-1.313T14 9.5q0-1.875-1.313-3.188T9.5 5Q7.625 5 6.312 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14Z"%2F%3E%3C%2Fsvg%3E')
 }
 #search-champs_ingredients{
     background-color:#3282F7 ;
@@ -104,16 +110,17 @@ button{
 }
 .arrowdown{
     position: absolute;
-    top: 22px;
+    top: 27px;
     right: 14px;
     visibility: visible;
+    content: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="16" height="16" viewBox="0 0 24 24"%3E%3Cg transform="rotate(-90 12 12)"%3E%3Cpath fill="white" d="M16 22L6 12L16 2l1.775 1.775L9.55 12l8.225 8.225L16 22Z"%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
 }
-
 .arrowup{
     position: absolute;
     top: 27px;
     right: 14px;
     visibility: hidden;
+    content:url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="16" height="16" viewBox="0 0 24 24"%3E%3Cg transform="rotate(90 12 12)"%3E%3Cpath fill="white" d="M16 22L6 12L16 2l1.775 1.775L9.55 12l8.225 8.225L16 22Z"%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
 }
 .search-ingredients,.search-appareils,.search-ustensiles{
     position: relative;
@@ -123,27 +130,37 @@ button{
   display:flex;
 }
 .ingredients-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height:397px;
+    border-radius: 5px;
     cursor: pointer;
     background-color: #3282F7;
     margin-left: 0px;
     margin-right: 0px;
     overflow: hidden;
-    display: none;
+    display:none;
 }
 .appareils-list{
+    display: grid;
+    grid-template-columns: 1fr;
+    height:397px;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color: #68D9A4;
-    display: none;
+    display:none;
 }
 
 .ustensiles-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height:397px;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
     background-color:#ED6454;
-    display: none;
+    display:none;
 }
 .search-champs input::placeholder{
     color:#FFFFFF;
@@ -160,7 +177,7 @@ button{
     padding-left: 20px;
     margin-bottom: 0;
     height:38px;
-    width:170px;
+    width:173px;
     display: flex;
     align-items: center;
 }
@@ -169,6 +186,7 @@ button{
 
 }
 .div-tag{
+
     display: none;
 }
 .tag{

@@ -1,5 +1,5 @@
 
-class api {
+class api { //api
    constructor(url) {
       this._url = url
    }
@@ -8,12 +8,7 @@ class api {
          .then(res => res.json())
          .then(res => res.recipes)
          .catch(err => console.log('an error occurs', err))
-
-   }
-
-
-}
-
+   }}
 
 class recipesApi extends api {
 
@@ -24,12 +19,10 @@ class recipesApi extends api {
    async getAllData() {
       return await this.getData()
    }
-
    async getDataIngredients() {
       const recipes = await this.getData()
       const ingredients = recipes.map(rec => { return rec.ingredients })
       return ingredients;
-
    }
    async getDataUstensils() {
       const recipes = await this.getData()
@@ -40,7 +33,6 @@ class recipesApi extends api {
       const recipes = await this.getData()
       const appareils = recipes.map(rec => { return rec.appliance })
       return appareils;
-
    }
 
 }

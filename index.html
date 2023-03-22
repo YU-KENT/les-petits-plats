@@ -1,73 +1,86 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--font-->
-    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Roboto&display=swap" rel="stylesheet">
-    <!--boostrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Les petits plats</title>
-    <link href="index.css" rel="stylesheet" type="text/css">
-    
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--font-->
+  <link href="https://fonts.googleapis.com/css2?family=Lato&family=Roboto&display=swap" rel="stylesheet">
+  <!--boostrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Les petits plats</title>
+  <link href="index.css" rel="stylesheet" type="text/css">
+
 </head>
+
 <body>
-    <header>
-        <div class="logo d-flex justify-content-center mt-5">
-            <img src="logo/logo.png" alt="logo de site">
-        </div>
-    </header>
-    <main class="container">
-      <!--search bar-->
-     <div class="row p-4 search"  >
-        <input class="col-11 py-4 rounded border-0" id="search-bar" type="text" placeholder="Recherche une recette">
-        <Button class="col-1 searchbar_icon col p-0 border-0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="black" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95Q10.6 16 9.5 16q-2.725 0-4.612-1.887Q3 12.225 3 9.5q0-2.725 1.888-4.613Q6.775 3 9.5 3t4.613 1.887Q16 6.775 16 9.5q0 1.1-.35 2.075q-.35.975-.95 1.725l6.3 6.3ZM9.5 14q1.875 0 3.188-1.312Q14 11.375 14 9.5q0-1.875-1.312-3.188Q11.375 5 9.5 5Q7.625 5 6.312 6.312Q5 7.625 5 9.5q0 1.875 1.312 3.188Q7.625 14 9.5 14Z"/></svg>
-        </button>
-     </div>
-     <!--tag-->
-     <div class ="div-tag"></div>
-     <!--search champs-->
-     <div class="search-champs d-sm-flex d-md-flex">
+  <header>
+    <div class="logo d-flex justify-content-center mt-5">
+      <img src="logo/logo.png" alt="logo de site">
+    </div>
+  </header>
+  <main class="container">
+    <!--search bar-->
+    <div class="row p-4 search">
+      <input class="col-11 py-4 rounded border-0" id="search-bar" type="text" placeholder="Recherche une recette">
+      <Button class="col-1 searchbar_icon col p-0 border-0">
+        <span class="iconSearch"></span>
+      </button>
+    </div>
+    <!--tag-->
+    <div class="div-tag"></div>
+    <!--search champs-->
+    <div class="search-champs d-sm-flex d-md-flex">
 
-        <div class="search-ingredients m-3">
-          <input type="text" placeholder="Ingredients" class="border-0 rounded" id="search-champs_ingredients" onfocus="this.placeholder='',this.style.width='667px',changeArrow(this)" onblur="this.placeholder='Ingredients',this.style.width='170px',gestionListApresBlur(this)">
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowdown" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(-90 12 12)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowup" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(90 14.4 14.4)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <!--list-->
-          <div class="ingredients-list rounded-bottom"></div>
-        </div>
+      <div class="search-ingredients m-3">
+        <input type="text" placeholder="Ingredients" class="border-0 rounded" id="search-champs_ingredients"
+          onfocus="this.placeholder='Rechercher un ingédient',this.style.width='667px',changeArrow(this)"
+          onblur="this.placeholder='Ingredients',this.style.width='170px',gestionListApresBlur(this)">
+        <span class="arrowdown"></span>
+        <span class="arrowup"></span>
+        <!--list-->
+        <div class="ingredients-list rounded-bottom"></div>
+      </div>
 
-        <div class="search-appareils m-3">
-          <input type="text" placeholder="Appareils" class="border-0 rounded" id="search-champs_appareils" onfocus="this.placeholder='',this.style.width='223px',changeArrow(this)" onblur="this.placeholder='Appareils',this.style.width='170px',gestionListApresBlur(this)">
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowdown" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(-90 12 12)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowup" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(90 14.4 14.4)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <!--list-->
-          <div class="appareils-list rounded-bottom"></div>
-        </div>
+      <div class="search-appareils m-3">
+        <input type="text" placeholder="Appareils" class="border-0 rounded" id="search-champs_appareils"
+          onfocus="this.placeholder='Rechercher un appareil',this.style.width='223px',changeArrow(this)"
+          onblur="this.placeholder='Appareils',this.style.width='170px',gestionListApresBlur(this)">
+        <span class="arrowdown"></span>
+        <span class="arrowup"></span>
 
-        <div class="search-ustensiles m-3">
-          <input type="text" placeholder="Ustensiles" class="border-0 rounded" id="search-champs_ustensiles" onfocus="this.placeholder='',this.style.width='445px',changeArrow(this)" onblur="this.placeholder='Ustensiles',this.style.width='170px',gestionListApresBlur(this)" >
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowdown" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(-90 12 12)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <svg xmlns="http://www.w3.org/2000/svg" class="arrowup" width="16" height="16" viewBox="2.4 0 24 24"><g transform="rotate(90 14.4 14.4)"><path fill="white" d="m10 24.4l-10-10l10-10l1.775 1.775L3.55 14.4l8.225 8.225L10 24.4Z"/></g></svg>
-          <!--list-->
-          <div class="ustensiles-list rounded-bottom "></div>
-        </div>
-     </div>
-   
-     <!--section recipes cards-->
-     <section class="recipes row row-cols-1 row-cols-sm-2 row-cols-md-3">
-        
-      
-     </section>
-     
-    </main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  
-<script src="JS/factories.js"></script>
-<script src="JS/api.js"></script>
+        <!--list-->
+        <div class="appareils-list rounded-bottom"></div>
+      </div>
 
-<script src="JS/main.js"></script>
+      <div class="search-ustensiles m-3">
+        <input type="text" placeholder="Ustensiles" class="border-0 rounded" id="search-champs_ustensiles"
+          onfocus="this.placeholder='Rechercher un ustensile',this.style.width='445px',changeArrow(this)"
+          onblur="this.placeholder='Ustensiles',this.style.width='170px',gestionListApresBlur(this)">
+        <span class="arrowdown"></span>
+        <span class="arrowup"></span>
+        <!--list-->
+        <div class="ustensiles-list rounded-bottom "></div>
+      </div>
+    </div>
+
+    <!--section recipes cards-->
+    <section class="recipes row row-cols-1 row-cols-sm-2 row-cols-md-3">
+
+
+    </section>
+
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="JS/factories.js"></script>
+  <script src="JS/api.js"></script>
+
+  <script src="JS/main.js"></script>
 
 </body>
+
 </html>

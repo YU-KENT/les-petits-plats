@@ -6,6 +6,7 @@ const champUstensiles = document.getElementById("search-champs_ustensiles")
 const divIngreList = document.querySelector(".ingredients-list")
 const divApparList = document.querySelector(".appareils-list")
 const divUstenList = document.querySelector(".ustensiles-list")
+const searchBar = document.getElementById("search-bar")
 
 async function init() {
     //get data
@@ -17,24 +18,105 @@ async function init() {
 
     displayRecipes(allRecipes);
     //get all list ingredients/appreils/ustensils
-    const ustensilsList = noRepeatArray(ustensilsData)
-    const appareilsList = noRepeatArray(appareilsData)
+    const usList = noRepeatArray(ustensilsData)
+    const appList = noRepeatArray(appareilsData)
     const ingreArry = getIngredientsList(ingredientsData)
-    const ingredientsList = noRepeatArray(ingreArry)
+    const ingreList = noRepeatArray(ingreArry)
     // display list 
-    displayingredientList(ingredientsList);
-    displayAppareilsList(appareilsList);
-    displayUstensilesList(ustensilsList);
+    displayingredientList(ingreList);
+    displayAppareilsList(appList);
+    displayUstensilesList(usList);
+    // click one of those list also will creat a tag
+    const ustensilesList = document.querySelectorAll(".ustensiles-list p");
+    const IngredientsList = document.querySelectorAll(".ingredients-list p");
+    const AppareilsList = document.querySelectorAll(".appareils-list p");
+    creatTag(ustensilesList);
+    creatTag(IngredientsList);
+    creatTag(AppareilsList);
+    //function search bar
+const searchBar = document.getElementById("search-bar")
+
+searchBar.addEventListener('keyup', e => {
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
+    if (e.target.value.length > 2) { //if entre plus 2 letters
+        if (tagList.length == 0) {  // and if taglist is empty
+            sectionRecipes.innerHTML = "";
+            displayRecipes(allRecipes);
+            filterSearch(searchedLetters)
+        } else { // taglist is not empty
+            sectionRecipes.innerHTML = "";
+            displayRecipes(allRecipes);
+            for (let i = 0; i < tagList.length; i++) {
+                const restTagLetters = cleanUpSpecialChars(tagList[i]);
+                filterSearch(restTagLetters)
+            }
+            filterSearch(searchedLetters)
+        }
+    } else if (e.target.value == "") { // if search bar is empty
+        if (tagList.length == 0) { //and if taglist is empty
+            sectionRecipes.innerHTML = "";
+            displayRecipes(allRecipes);
+
+        } else { //search bar is empty, taglist is not empty
+            sectionRecipes.innerHTML = "";
+            displayRecipes(allRecipes);
+            for (let i = 0; i < tagList.length; i++) {
+                const restTagLetters = cleanUpSpecialChars(tagList[i]);
+                filterSearch(restTagLetters, allRecipes);
+            }
+        }
+    }
+})
+
+// search the ingredient in list ingredient
+champIngredients.addEventListener('keyup', (e) => {
+    champIngredients.style.width = "223px"
+    divIngreList.style.height = "unset"
+    divIngreList.style.display = "flex";
+    divIngreList.style.flexDirection = "column";
+    const IngredientsList = document.querySelectorAll(".ingredients-list p")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
+
+    if (e.target.value.length > 2) {
+        filterChamps(searchedLetters, IngredientsList)
+        creatTag(IngredientsList) // creat tag
+    }
+})
+
+//seaarch the Appareil in list Appareils
+champAppareils.addEventListener('keyup', (e) => {
+    const AppareilsList = document.querySelectorAll(".appareils-list p")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
+    champAppareils.style.width = "223px"
+    divApparList.style.height = "unset"
+    divApparList.style.display = "flex";
+    divApparList.style.flexDirection = "column";
+    if (e.target.value.length > 2) {
+        filterChamps(searchedLetters, AppareilsList)
+        creatTag(AppareilsList)
+    }
+
+})
+//search ustensile in list ustensiles
+champUstensiles.addEventListener('keyup', (e) => {
+    const ustensilesList = document.querySelectorAll(".ustensiles-list p")
+    const searchedLetters = cleanUpSpecialChars(e.target.value)
+    champUstensiles.style.width = "223px"
+    divUstenList.style.height = "unset"
+    divUstenList.style.display = "flex";
+    divUstenList.style.flexDirection = "column";
+    if (e.target.value.length > 2) {
+        filterChamps(searchedLetters, ustensilesList)
+        creatTag(ustensilesList)
+    }
+})
 
 }
 init();
-function displayRecipes(Recipes) { // display recipes cards
-    Recipes.forEach(recipe => {
-        const ingredients = recipe.ingredients
-        const Template = new recipesFactory(recipe, ingredients);
-        sectionRecipes.appendChild(Template.getRecipesCard());
-        Template.getIngredientCard(recipe, ingredients);
-    })
+
+// deplace all recipes dans un dom via innerHTML
+function displayRecipes(Recipes) {
+    sectionRecipes.innerHTML = recipesFactory(Recipes)
 }
 
 function noRepeatArray(arrData) { //get 1D array
@@ -61,19 +143,6 @@ function cleanUpSpecialChars(str) {
     let newStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase();
     return newStr;
 }
-
-//function search bar
-const searchBar = document.getElementById("search-bar")
-
-searchBar.addEventListener('keyup', e => {
-    const searchedLetters = cleanUpSpecialChars(e.target.value)
-    if (searchedLetters.length > 2) { // When the user enters 3 letters, run function search
-        filterSearch(searchedLetters)   
-    } else if (e.target.value == "") { // when search bar is empty, display all recipes
-        cleanCardNonvisible();
-        checkResult();
-    }
-})
 
 function filterSearch(letters) {
     const recipesCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")//get availables recipes
@@ -116,46 +185,6 @@ function filterChamps(letters, list) {
         }
     }
 }
-// search the ingredient in list ingredient
-champIngredients.addEventListener('keyup', (e) => {
-    const IngredientsList = document.querySelectorAll(".ingredients-list p")
-    const searchedLetters = cleanUpSpecialChars(e.target.value)
-
-    if (e.target.value.length > 2) {
-        filterChamps(searchedLetters, IngredientsList)
-        divIngreList.style.display = "flex"; // montrer le resultat de recherche
-        divIngreList.style.flexDirection = "column";
-        creatTag(IngredientsList) // creat tag
-
-    }
-})
-
-//seaarch the Appareil in list Appareils
-champAppareils.addEventListener('keyup', (e) => {
-    const AppareilsList = document.querySelectorAll(".appareils-list p")
-    const searchedLetters = cleanUpSpecialChars(e.target.value)
-
-    if (e.target.value.length > 2) {
-        filterChamps(searchedLetters, AppareilsList)
-        divApparList.style.display = "flex"; // montrer le resultat de recherche
-        divApparList.style.flexDirection = "column";
-        creatTag(AppareilsList)
-    }
-
-})
-//search ustensile in list ustensiles
-champUstensiles.addEventListener('keyup', (e) => {
-    const ustensilesList = document.querySelectorAll(".ustensiles-list p")
-    const searchedLetters = cleanUpSpecialChars(e.target.value)
-
-    if (e.target.value.length > 2) {
-        filterChamps(searchedLetters, ustensilesList)
-        divUstenList.style.display = "flex"; // montrer le resultat de recherche
-        divUstenList.style.flexDirection = "column";
-        creatTag(ustensilesList)
-    }
-
-})
 
 
 function cleanListNonvisible() {
@@ -167,38 +196,43 @@ function cleanCardNonvisible() {
     nonvisibleCard.forEach((list) => list.classList.remove("nonvisible"))
 }
 
-//creat Tag
-var tagList = []; // un tag list
-function creatTag(lists) {
-    const parentList = lists[0].parentNode
-    for (let i = 0; i < lists.length; i++) {
-
+// function creat Tag
+var tagList = []; //  tag list
+function creatTag(lists, allRecipes) {
+    const parentList = lists[0].parentNode;
+    for (let i = 0; i < lists.length; i++) { // for all list if clicked
         lists[i].addEventListener("click", (e) => {
-            const listSelected = e.target.textContent
-            const motDeCle = cleanUpSpecialChars(listSelected)
-            if (tagList.indexOf(listSelected) == -1) { //if key word not exist in tag list
-                tagFactory(listSelected, e); //creat a tag with this key word
-                tagList.push(listSelected); // add this key word in tag list
-                parentList.style.display = "none";
-                cleanListNonvisible();
-                filterSearch(motDeCle) // search this key word in all recipes
-                console.log(tagList)
+            e.preventDefault()
+            const champVal = parentList.parentNode.firstElementChild // input champ
+            champVal.value = ""; //vide value of input
+            const listSelected = e.target.textContent; // get value clicked
+            const motDeCle = cleanUpSpecialChars(listSelected);
+            if (tagList.indexOf(listSelected) == -1) {  // if value clicked not exists in taglist
+                tagFactory(listSelected, e);  //creat tag
+                tagList.push(listSelected);  // add value in taglist
+                parentList.style.display = "none";  // close list
+                filterSearch(motDeCle, allRecipes) // do the search 
             }
             else return
-
         })
     }
 }
+
 // close tag
-function closeTag(_this) {
+async function closeTag(_this) {
+    const dataApi = new recipesApi("data/recipes.json");
+    const allRecipes = await dataApi.getAllData();
     const tagLetters = _this.previousElementSibling.textContent
-    _this.parentNode.remove();
-    removeByValue(tagList, tagLetters)// remove this key word in tag list
-    cleanCardNonvisible();
-    for (let i = 0; i < tagList.length; i++) { // get reste of tag list, run function search
-        console.log(tagList)
-        const restTagLetters = cleanUpSpecialChars(tagList[i])
-        filterSearch(restTagLetters)
+    _this.parentNode.remove(); // remove the tag
+    removeByValue(tagList, tagLetters) //remove clicked letters in tag list
+    sectionRecipes.innerHTML = "";
+    displayRecipes(allRecipes)
+    for (let i = 0; i < tagList.length; i++) { // search de rest letters in tag list
+        const restTagLetters = cleanUpSpecialChars(tagList[i]);
+        filterSearch(restTagLetters, allRecipes);
+    }
+    if (!searchBar.value == "") {
+        filterSearch(cleanUpSpecialChars(searchBar.value), allRecipes)
     }
 
 }
@@ -212,9 +246,13 @@ function removeByValue(arr, val) {
     }
 }
 
-function changeArrow(_this) {
+function changeArrow(_this) { // function onfocus
+    const parentList = _this.parentNode.lastElementChild;
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
+    parentList.style.display = "grid";
+    parentList.style.width = "unset"
+    parentList.style.height = "397px"
     arrowDown.style.visibility = "hidden";
     arrowUp.style.visibility = "visible";
 }
@@ -222,14 +260,12 @@ function changeArrow(_this) {
 function gestionListApresBlur(_this) {
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
-    if (_this.value == "") {
-        const parentList = _this.parentNode.lastElementChild
-        parentList.style.display = "none";
-        _this.style.width = '170px',
-            cleanListNonvisible();
-        arrowDown.style.visibility = "visible";
-        arrowUp.style.visibility = "hidden";
+    const parentList = _this.parentNode.lastElementChild;
+    arrowDown.style.visibility = "visible";
+    arrowUp.style.visibility = "hidden";
+    _this.style.width = '170px',
+        setTimeout(function () {  //avoid onblur function run before creat tag
+            parentList.style.display = "none";
+            cleanListNonvisible()
+        }, 150)
     }
-
-}
-

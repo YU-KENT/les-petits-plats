@@ -35,7 +35,7 @@ async function init() {  // function main
                 sectionRecipes.innerHTML = "";
                 displayRecipes(allRecipes);
                 filterSearch(searchedLetters, allRecipes)
-            }else { // taglist is not empty
+            } else { // taglist is not empty
                 sectionRecipes.innerHTML = "";
                 displayRecipes(allRecipes);
                 for (let i = 0; i < tagList.length; i++) {
@@ -48,16 +48,14 @@ async function init() {  // function main
             if (tagList.length == 0) { //and if taglist is empty
                 sectionRecipes.innerHTML = "";
                 displayRecipes(allRecipes);
-                
+
             } else { //search bar is empty, taglist is not empty
                 sectionRecipes.innerHTML = "";
                 displayRecipes(allRecipes);
                 for (let i = 0; i < tagList.length; i++) {
                     const restTagLetters = cleanUpSpecialChars(tagList[i]);
                     filterSearch(restTagLetters, allRecipes);
-                }
-            }
-        }
+                }}}
     })
     // search in champ ingredients
     champIngredients.addEventListener('keyup', (e) => {
@@ -71,11 +69,7 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
             creatTag(IngredientsList, allRecipes);
-        } else if (e.target.value == "") {
-            divIngreList.innerHTML = "";
-            displayingredientList(ingredientsList);
-        }
-    })
+        }})
     //seaarch in champ Appareils
     champAppareils.addEventListener('keyup', (e) => {
         champAppareils.style.width = "223px"
@@ -88,12 +82,7 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
             creatTag(AppareilsList, allRecipes);
-        } else if (e.target.value == "") {
-            divApparList.innerHTML = "";
-            displayAppareilsList(appareilsList)
-        }
-
-    })
+        }})
     //search in champ ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         champUstensiles.style.width = "223px"
@@ -106,12 +95,8 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, ustensilesList);
             creatTag(ustensilesList, allRecipes);
-        } else if (e.target.value == "") {
-            divUstenList.innerHTML = "";
-            displayUstensilesList(ustensilsList);
-        }
-    })
-    
+        }})
+
     const ustensilesList = document.querySelectorAll(".ustensiles-list p");
     const IngredientsList = document.querySelectorAll(".ingredients-list p");
     const AppareilsList = document.querySelectorAll(".appareils-list p");
@@ -125,10 +110,10 @@ init();
 
 // deplace all recipes dans un dom via innerHTML
 function displayRecipes(Recipes) {
-    sectionRecipes.innerHTML = recipesFactory(Recipes) 
+    sectionRecipes.innerHTML = recipesFactory(Recipes)
 }
 // gestion for not have same word in 3 list Ingredients ect.
-function noRepeatArray(arrData) { 
+function noRepeatArray(arrData) {
     var arr = arrData.flat();
     var newArr = [...new Set(arr)];
     return newArr;
@@ -141,8 +126,7 @@ function getIngredientsList(ingredientsData) {
         for (let i = 0; i < obj.length; i++) {
             const newArry = obj[i].ingredient;
             newList.push(newArry);
-        }
-    })
+        }})
     return newList;
 }
 
@@ -187,7 +171,6 @@ function filterSearch(Letters, allRecipes) {
     checkResult();
 }
 
-
 function checkResult() { //functon check if no recipes find, message error show
     const divSearchbar = document.querySelector(".search");
     const restCard = document.querySelectorAll(".recipes_card");
@@ -195,7 +178,7 @@ function checkResult() { //functon check if no recipes find, message error show
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
         divSearchbar.setAttribute("data-error-visible", true);
 
-    }else {
+    } else {
         divSearchbar.removeAttribute("data-error");
         divSearchbar.removeAttribute("data-error-visible");
     }
@@ -209,8 +192,8 @@ function filterChampsList(letters, list) {
         } else {
             list[i].classList.add("nonvisible");
         }
-    }}
-
+    }
+}
 
 function cleanListNonvisible() {
     const nonvisibleList = document.querySelectorAll(".list.nonvisible");
@@ -264,8 +247,7 @@ function removeByValue(arr, value) {
         if (arr[i] == value) {
             arr.splice(i, 1);
             break;
-        }
-    }
+        }}
 }
 
 function changeArrow(_this) { // function onfocus
@@ -277,16 +259,8 @@ function changeArrow(_this) { // function onfocus
     parentList.style.height = "397px"
     arrowDown.style.visibility = "hidden";
     arrowUp.style.visibility = "visible";
-    if (!_this.value == "") {
-        _this.style.width = "223px"
-        parentList.style.width = "223px"
-        parentList.style.height = "397px"
-        parentList.style.display = "flex"
-        parentList.style.flexDirection = "column";
-    }
-
-
 }
+
 function gestionListApresBlur(_this) {
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
@@ -294,9 +268,7 @@ function gestionListApresBlur(_this) {
     arrowDown.style.visibility = "visible";
     arrowUp.style.visibility = "hidden";
     _this.style.width = '170px',
-    setTimeout(function () {  //avoid onblur function run before creat tag
-        parentList.style.display = "none";
-        cleanListNonvisible()
-    }, 150)
-
-}
+        setTimeout(function () {  //avoid onblur function run before creat tag
+            parentList.style.display = "none";
+            cleanListNonvisible()
+        }, 150)}

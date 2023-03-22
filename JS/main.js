@@ -55,7 +55,9 @@ async function init() {  // function main
                 for (let i = 0; i < tagList.length; i++) {
                     const restTagLetters = cleanUpSpecialChars(tagList[i]);
                     filterSearch(restTagLetters, allRecipes);
-                }}}
+                }
+            }
+        }
     })
     // search in champ ingredients
     champIngredients.addEventListener('keyup', (e) => {
@@ -69,7 +71,8 @@ async function init() {  // function main
             filterChampsList(searchedLetters, IngredientsList)
             creatTag(IngredientsList, allRecipes);
             divIngreList.style.height = "unset"
-        }})
+        }
+    })
     //seaarch in champ Appareils
     champAppareils.addEventListener('keyup', (e) => {
         champAppareils.style.width = "223px"
@@ -83,7 +86,8 @@ async function init() {  // function main
             filterChampsList(searchedLetters, AppareilsList)
             creatTag(AppareilsList, allRecipes);
             divApparList.style.height = "unset"
-        }})
+        }
+    })
     //search in champ ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         champUstensiles.style.width = "223px"
@@ -97,7 +101,8 @@ async function init() {  // function main
             filterChampsList(searchedLetters, ustensilesList);
             creatTag(ustensilesList, allRecipes);
             divUstenList.style.height = "unset"
-        }})
+        }
+    })
 
     const ustensilesList = document.querySelectorAll(".ustensiles-list p");
     const IngredientsList = document.querySelectorAll(".ingredients-list p");
@@ -128,7 +133,8 @@ function getIngredientsList(ingredientsData) {
         for (let i = 0; i < obj.length; i++) {
             const newArry = obj[i].ingredient;
             newList.push(newArry);
-        }})
+        }
+    })
     return newList;
 }
 
@@ -249,7 +255,8 @@ function removeByValue(arr, value) {
         if (arr[i] == value) {
             arr.splice(i, 1);
             break;
-        }}
+        }
+    }
 }
 
 function changeArrow(_this) { // function onfocus
@@ -273,4 +280,5 @@ function gestionListApresBlur(_this) {
         setTimeout(function () {  //avoid onblur function run before creat tag
             parentList.style.display = "none";
             cleanListNonvisible()
-        }, 150)}
+        }, 150)
+}

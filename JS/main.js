@@ -60,20 +60,20 @@ async function init() {  // function main
     // search in champ ingredients
     champIngredients.addEventListener('keyup', (e) => {
         champIngredients.style.width = "223px"
-        divIngreList.style.height = "unset"
+        divIngreList.style.height = "397px"
         divIngreList.style.display = "flex"; // get search results
         divIngreList.style.flexDirection = "column";
         const IngredientsList = document.querySelectorAll(".ingredients-list p");
         const searchedLetters = cleanUpSpecialChars(e.target.value);
-
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
             creatTag(IngredientsList, allRecipes);
+            divIngreList.style.height = "unset"
         }})
     //seaarch in champ Appareils
     champAppareils.addEventListener('keyup', (e) => {
         champAppareils.style.width = "223px"
-        divApparList.style.height = "unset"
+        divApparList.style.height = "397px"
         divApparList.style.display = "flex";
         divApparList.style.flexDirection = "column";
         const AppareilsList = document.querySelectorAll(".appareils-list p");
@@ -82,11 +82,12 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
             creatTag(AppareilsList, allRecipes);
+            divApparList.style.height = "unset"
         }})
     //search in champ ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         champUstensiles.style.width = "223px"
-        divUstenList.style.height = "unset"
+        divUstenList.style.height = "397px"
         divUstenList.style.display = "flex";
         divUstenList.style.flexDirection = "column";
         const ustensilesList = document.querySelectorAll(".ustensiles-list p");
@@ -95,6 +96,7 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, ustensilesList);
             creatTag(ustensilesList, allRecipes);
+            divUstenList.style.height = "unset"
         }})
 
     const ustensilesList = document.querySelectorAll(".ustensiles-list p");

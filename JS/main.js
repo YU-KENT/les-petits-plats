@@ -62,7 +62,7 @@ async function init() {  // function main
     // search in champ ingredients
     champIngredients.addEventListener('keyup', (e) => {
         champIngredients.style.width = "223px"
-        divIngreList.style.height = "397px"
+        divIngreList.style.width = "223px"
         divIngreList.style.display = "flex"; // get search results
         divIngreList.style.flexDirection = "column";
         const IngredientsList = document.querySelectorAll(".ingredients-list p");
@@ -76,7 +76,7 @@ async function init() {  // function main
     //seaarch in champ Appareils
     champAppareils.addEventListener('keyup', (e) => {
         champAppareils.style.width = "223px"
-        divApparList.style.height = "397px"
+        divApparList.style.width = "223px"
         divApparList.style.display = "flex";
         divApparList.style.flexDirection = "column";
         const AppareilsList = document.querySelectorAll(".appareils-list p");
@@ -91,7 +91,7 @@ async function init() {  // function main
     //search in champ ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         champUstensiles.style.width = "223px"
-        divUstenList.style.height = "397px"
+        divUstenList.style.width = "223px"
         divUstenList.style.display = "flex";
         divUstenList.style.flexDirection = "column";
         const ustensilesList = document.querySelectorAll(".ustensiles-list p");
@@ -264,10 +264,12 @@ function changeArrow(_this) { // function onfocus
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
     parentList.style.display = "grid";
-    parentList.style.width = "unset"
-    parentList.style.height = "397px"
+    parentList.style.width = "667px";
     arrowDown.style.visibility = "hidden";
     arrowUp.style.visibility = "visible";
+    if(parentList.classList.contains("ingredients-list")){
+    parentList.style.height = "394px";
+    }
 }
 
 function gestionListApresBlur(_this) {

@@ -55,25 +55,28 @@ async function init() {  // function main
                 for (let i = 0; i < tagList.length; i++) {
                     const restTagLetters = cleanUpSpecialChars(tagList[i]);
                     filterSearch(restTagLetters, allRecipes);
-                }}}
+                }
+            }
+        }
     })
     // search in champ ingredients
     champIngredients.addEventListener('keyup', (e) => {
         champIngredients.style.width = "223px"
-        divIngreList.style.height = "unset"
+        divIngreList.style.width = "223px"
         divIngreList.style.display = "flex"; // get search results
         divIngreList.style.flexDirection = "column";
         const IngredientsList = document.querySelectorAll(".ingredients-list p");
         const searchedLetters = cleanUpSpecialChars(e.target.value);
-
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, IngredientsList)
             creatTag(IngredientsList, allRecipes);
-        }})
+            divIngreList.style.height = "unset"
+        }
+    })
     //seaarch in champ Appareils
     champAppareils.addEventListener('keyup', (e) => {
         champAppareils.style.width = "223px"
-        divApparList.style.height = "unset"
+        divApparList.style.width = "223px"
         divApparList.style.display = "flex";
         divApparList.style.flexDirection = "column";
         const AppareilsList = document.querySelectorAll(".appareils-list p");
@@ -82,11 +85,13 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, AppareilsList)
             creatTag(AppareilsList, allRecipes);
-        }})
+            divApparList.style.height = "unset"
+        }
+    })
     //search in champ ustensiles
     champUstensiles.addEventListener('keyup', (e) => {
         champUstensiles.style.width = "223px"
-        divUstenList.style.height = "unset"
+        divUstenList.style.width = "223px"
         divUstenList.style.display = "flex";
         divUstenList.style.flexDirection = "column";
         const ustensilesList = document.querySelectorAll(".ustensiles-list p");
@@ -95,7 +100,9 @@ async function init() {  // function main
         if (e.target.value.length > 2) {
             filterChampsList(searchedLetters, ustensilesList);
             creatTag(ustensilesList, allRecipes);
-        }})
+            divUstenList.style.height = "unset"
+        }
+    })
 
     const ustensilesList = document.querySelectorAll(".ustensiles-list p");
     const IngredientsList = document.querySelectorAll(".ingredients-list p");
@@ -126,7 +133,8 @@ function getIngredientsList(ingredientsData) {
         for (let i = 0; i < obj.length; i++) {
             const newArry = obj[i].ingredient;
             newList.push(newArry);
-        }})
+        }
+    })
     return newList;
 }
 
@@ -247,7 +255,8 @@ function removeByValue(arr, value) {
         if (arr[i] == value) {
             arr.splice(i, 1);
             break;
-        }}
+        }
+    }
 }
 
 function changeArrow(_this) { // function onfocus
@@ -255,10 +264,12 @@ function changeArrow(_this) { // function onfocus
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
     parentList.style.display = "grid";
-    parentList.style.width = "unset"
-    parentList.style.height = "397px"
+    parentList.style.width = "667px";
     arrowDown.style.visibility = "hidden";
     arrowUp.style.visibility = "visible";
+    if(parentList.classList.contains("ingredients-list")){
+    parentList.style.height = "394px";
+    }
 }
 
 function gestionListApresBlur(_this) {
@@ -271,4 +282,5 @@ function gestionListApresBlur(_this) {
         setTimeout(function () {  //avoid onblur function run before creat tag
             parentList.style.display = "none";
             cleanListNonvisible()
-        }, 150)}
+        }, 150)
+}

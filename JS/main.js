@@ -8,15 +8,16 @@ const divApparList = document.querySelector(".appareils-list")
 const divUstenList = document.querySelector(".ustensiles-list")
 const searchBar = document.getElementById("search-bar")
 
-async function init() {
+async function init() {  // function main
     //get data
     const dataApi = new recipesApi("data/recipes.json");
     const allRecipes = await dataApi.getAllData();
     const ingredientsData = await dataApi.getDataIngredients();
     const appareilsData = await dataApi.getDataAppareils();
     const ustensilsData = await dataApi.getDataUstensils();
-
+    // display qll recipes
     displayRecipes(allRecipes);
+
     //get all list ingredients/appreils/ustensils
     const usList = noRepeatArray(ustensilsData)
     const appList = noRepeatArray(appareilsData)
@@ -111,8 +112,18 @@ champUstensiles.addEventListener('keyup', (e) => {
     }
 })
 
+    const ustensilesList = document.querySelectorAll(".ustensiles-list p");
+    const IngredientsList = document.querySelectorAll(".ingredients-list p");
+    const AppareilsList = document.querySelectorAll(".appareils-list p");
+    // click one of those list also will creat a tag
+    creatTag(ustensilesList, allRecipes);
+    creatTag(AppareilsList, allRecipes);
+    creatTag(IngredientsList, allRecipes);
 }
+
 init();
+
+// deplace all recipes dans un dom via innerHTML
 
 // deplace all recipes dans un dom via innerHTML
 function displayRecipes(Recipes) {
@@ -122,24 +133,22 @@ function displayRecipes(Recipes) {
 function noRepeatArray(arrData) { //get 1D array
     var arr = arrData.flat();
     var newArr = [...new Set(arr)];
-    return newArr
-
+    return newArr;
 }
 
+// get all Ingredients List from data
 function getIngredientsList(ingredientsData) {
     var newList = [];
     ingredientsData.forEach((obj) => {
         for (let i = 0; i < obj.length; i++) {
-            const newArry = obj[i].ingredient
-            newList.push(newArry)
+            const newArry = obj[i].ingredient;
+            newList.push(newArry);
         }
     })
     return newList;
-
 }
 
-
-function cleanUpSpecialChars(str) {
+function cleanUpSpecialChars(str) { //clean special charecter
     let newStr = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s/g, "").toLowerCase();
     return newStr;
 }
@@ -153,22 +162,36 @@ function filterSearch(letters) {
         } else {
             recipesCard[i].classList.add("nonvisible")
         }
+        return false;
     }
-    checkResult();
 
+    const recipesVisibleCard = document.querySelectorAll(".recipes_card");//get rest recipes
+    var restRecipes = []; //creat a array will include the data of rest recipes
+    for (let i = 0; i < recipesVisibleCard.length; i++) {
+        var dataId = recipesVisibleCard[i].getAttribute("data-id");
+        const [rec] = allRecipes.reduce((accumulator, currentValue) => {
+            if (currentValue.id == dataId) {
+                return [...accumulator, currentValue];
+            } return accumulator;
+        }, []);
+        restRecipes.push(rec);
+    }
+    const filteredArray = restRecipes.filter(filterRec);// filter reste recipe by letters
+    sectionRecipes.innerHTML = "";
+    displayRecipes(filteredArray) // display recipes
+    checkResult();
 }
 
-function checkResult() { //Aucune recette correspondante à la recherche,message error
-    const divSearchbar = document.querySelector(".search")
-    const restCard = document.querySelectorAll(".recipes_card:not(.nonvisible)")
-
+function checkResult() { //functon check if no recipes find, message error show
+    const divSearchbar = document.querySelector(".search");
+    const restCard = document.querySelectorAll(".recipes_card");
     if (restCard.length == 0) {
         divSearchbar.setAttribute("data-error", "Vous pouvez chercher «tarte aux pommes », « poisson », etc...");
-        divSearchbar.setAttribute("data-error-visible", true)
-    }
-    else {
+        divSearchbar.setAttribute("data-error-visible", true);
+
+    } else {
         divSearchbar.removeAttribute("data-error");
-        divSearchbar.removeAttribute("data-error-visible")
+        divSearchbar.removeAttribute("data-error-visible");
     }
 }
 
@@ -178,22 +201,17 @@ function filterChamps(letters, list) {
 
     for (let i = 0; i < list.length; i++) {
         if (cleanUpSpecialChars(list[i].textContent).includes(letters)) {
-            list[i].classList.remove("nonvisible")
-
+            list[i].classList.remove("nonvisible");
         } else {
-            list[i].classList.add("nonvisible")
+            list[i].classList.add("nonvisible");
         }
     }
 }
 
 
 function cleanListNonvisible() {
-    const nonvisibleList = document.querySelectorAll(".list.nonvisible")
-    nonvisibleList.forEach((list) => list.classList.remove("nonvisible"))
-}
-function cleanCardNonvisible() {
-    const nonvisibleCard = document.querySelectorAll(".recipes_card.nonvisible")
-    nonvisibleCard.forEach((list) => list.classList.remove("nonvisible"))
+    const nonvisibleList = document.querySelectorAll(".list.nonvisible");
+    nonvisibleList.forEach((list) => list.classList.remove("nonvisible"));
 }
 
 // function creat Tag
@@ -201,7 +219,22 @@ var tagList = []; //  tag list
 function creatTag(lists, allRecipes) {
     const parentList = lists[0].parentNode;
     for (let i = 0; i < lists.length; i++) { // for all list if clicked
+// function creat Tag
+var tagList = []; //  tag list
+function creatTag(lists, allRecipes) {
+    const parentList = lists[0].parentNode;
+    for (let i = 0; i < lists.length; i++) { // for all list if clicked
         lists[i].addEventListener("click", (e) => {
+            e.preventDefault()
+            const champVal = parentList.parentNode.firstElementChild // input champ
+            champVal.value = ""; //vide value of input
+            const listSelected = e.target.textContent; // get value clicked
+            const motDeCle = cleanUpSpecialChars(listSelected);
+            if (tagList.indexOf(listSelected) == -1) {  // if value clicked not exists in taglist
+                tagFactory(listSelected, e);  //creat tag
+                tagList.push(listSelected);  // add value in taglist
+                parentList.style.display = "none";  // close list
+                filterSearch(motDeCle, allRecipes) // do the search 
             e.preventDefault()
             const champVal = parentList.parentNode.firstElementChild // input champ
             champVal.value = ""; //vide value of input
@@ -233,13 +266,24 @@ async function closeTag(_this) {
     }
     if (!searchBar.value == "") {
         filterSearch(cleanUpSpecialChars(searchBar.value), allRecipes)
+    _this.parentNode.remove(); // remove the tag
+    removeByValue(tagList, tagLetters) //remove clicked letters in tag list
+    sectionRecipes.innerHTML = "";
+    displayRecipes(allRecipes)
+    for (let i = 0; i < tagList.length; i++) { // search de rest letters in tag list
+        const restTagLetters = cleanUpSpecialChars(tagList[i]);
+        filterSearch(restTagLetters, allRecipes);
+    }
+    if (!searchBar.value == "") {
+        filterSearch(cleanUpSpecialChars(searchBar.value), allRecipes)
     }
 
 }
-// remove un value dans taglist
-function removeByValue(arr, val) {
+
+// function remove a value of the taglist
+function removeByValue(arr, value) {
     for (var i = 0; i < arr.length; i++) {
-        if (arr[i] == val) {
+        if (arr[i] == value) {
             arr.splice(i, 1);
             break;
         }
@@ -251,10 +295,12 @@ function changeArrow(_this) { // function onfocus
     const arrowDown = _this.nextElementSibling;
     const arrowUp = arrowDown.nextElementSibling;
     parentList.style.display = "grid";
-    parentList.style.width = "unset"
-    parentList.style.height = "397px"
+    parentList.style.width = "667px";
     arrowDown.style.visibility = "hidden";
     arrowUp.style.visibility = "visible";
+    if(parentList.classList.contains("ingredients-list")){
+    parentList.style.height = "394px";
+    }
 }
 
 function gestionListApresBlur(_this) {
@@ -268,4 +314,4 @@ function gestionListApresBlur(_this) {
             parentList.style.display = "none";
             cleanListNonvisible()
         }, 150)
-    }
+}

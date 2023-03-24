@@ -57,7 +57,6 @@ button{
     opacity: 1;
   }
   input:focus::placeholder {
-    font-weight: 200;
     opacity: 0.5;
 }
 
@@ -131,20 +130,26 @@ button{
 }
 .ingredients-list{
     display: grid;
+    position: absolute;
+    height:394px; 
+    overflow:auto;
+    z-index: 99;
+    width:667px;
     grid-template-columns: 1fr 1fr 1fr;
-    height:397px;
     border-radius: 5px;
     cursor: pointer;
     background-color: #3282F7;
     margin-left: 0px;
     margin-right: 0px;
-    overflow: hidden;
     display:none;
+   
 }
 .appareils-list{
     display: grid;
-    grid-template-columns: 1fr;
-    height:397px;
+    position: absolute;
+    z-index: 99;
+    width:667px;
+    grid-template-columns: 1fr 1fr 1fr;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
@@ -154,8 +159,12 @@ button{
 
 .ustensiles-list{
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    height:397px;
+    position: absolute;
+    height:394px; 
+    overflow:auto;
+    z-index: 99;
+    width:667px;
+    grid-template-columns: 1fr 1fr 1fr;
     cursor: pointer;
     margin-left: 0px;
     margin-right: 0px;
